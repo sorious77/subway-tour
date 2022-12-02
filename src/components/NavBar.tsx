@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { themeState, userState } from "components/states";
+import { themeState, userState } from "./states";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 const NavBar = () => {
