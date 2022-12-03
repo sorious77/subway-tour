@@ -41,7 +41,9 @@ const LoginHandler = async (
     return res.status(200).json(matchedUser);
   }
 
-  return res.status(200).json({ error: "No Matched User" });
+  return res
+    .status(200)
+    .json({ error: "일치하는 회원 정보가 존재하지 않습니다." });
 };
 
 export default Handler("POST", LoginHandler);
