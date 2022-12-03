@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  min-width: 700px;
+}
+
 * {
   box-sizing: border-box;
+}
+
+#__next {
+  height: 100vh;
+}
+
+input {
+  background-color: inherit;
 }
