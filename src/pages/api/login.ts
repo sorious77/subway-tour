@@ -35,8 +35,6 @@ const LoginHandler = async (
     }
   });
 
-  console.log(matchedUser, email, password);
-
   if (matchedUser) {
     return res.status(200).json(matchedUser);
   }

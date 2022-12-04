@@ -47,7 +47,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-full ">
+    <div className="flex items-center justify-center h-full">
       <form
         className="flex flex-col w-1/3"
         onSubmit={handleSubmit(async (data) => {
