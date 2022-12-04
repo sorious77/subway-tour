@@ -56,10 +56,8 @@ const NavBar = () => {
         </div>
         {user && (
           <>
-            <div>
-              <Link href="/gacha">뽑기</Link>
-            </div>
-            <div>글</div>
+            <Link href="/gacha">뽑기</Link>
+            <Link href="/list/1">후기</Link>
           </>
         )}
       </div>

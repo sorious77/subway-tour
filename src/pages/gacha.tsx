@@ -3,6 +3,7 @@ import { userState } from "components/states";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Head from "next/head";
 
 interface Station {
   station_nm: string;
@@ -13,13 +14,13 @@ interface Station {
 const Gacha = () => {
   const user = useRecoilValue(userState);
   const router = useRouter();
-  const [stations, setStations] = useState<Station[]>([]);
+  const [stations, setStations] = useState<Station[]>();
   const [station, setStation] = useState<Station>();
 
   useEffect(() => {
     (() => {
       if (!user) {
-        // router.push("/");
+        router.push("/");
       }
     })();
   }, [user]);
@@ -37,15 +38,18 @@ const Gacha = () => {
       alert("지하철 역 정보 로딩에 실패했습니다... 잠시 후 다시 실행해주세요");
     }
 
-    let idx = Math.floor(Math.random() * stations.length);
+    let idx = Math.floor(Math.random() * stations!.length);
 
     console.log(idx);
 
-    setStation(stations[idx]);
+    setStation(stations![idx]);
   };
 
   return (
     <div className="flex flex-col items-center justify-center h-full">
+      <Head>
+        <title>Subway Tour | 뽑기</title>
+      </Head>
       {station && (
         <div className="flex flex-col mb-10 text-center">
           <div className="text-4xl">{station?.station_nm}</div>
@@ -73,12 +77,16 @@ const Gacha = () => {
           </Link>
         </div>
       )}
-      <button
-        onClick={handleGacha}
-        className="px-4 py-2 text-white bg-black rounded dark:bg-white dark:text-black hover:bg-gray-600 hover:transition-colors hover:duration-500"
-      >
-        Gacha
-      </button>
+      {stations ? (
+        <button
+          onClick={handleGacha}
+          className="px-4 py-2 text-white bg-black rounded dark:bg-white dark:text-black hover:bg-gray-600 hover:transition-colors hover:duration-500"
+        >
+          Gacha
+        </button>
+      ) : (
+        <div>Loading...</div>
+      )}
     </div>
   );
 };
