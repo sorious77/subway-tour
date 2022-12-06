@@ -26,14 +26,21 @@ const List = () => {
 
         const result = await (await fetch(`/api/list/${page}`)).json();
 
-        console.log(result);
         setPostInfo(result);
       }
     })();
   }, [router.isReady]);
 
   return (
-    <div className="flex flex-col items-center justify-center py-10">
+    <div className="flex flex-col items-center justify-center px-4">
+      <button
+        onClick={() => {
+          router.push("/write");
+        }}
+        className="self-end px-4 my-4 mr-10 text-white bg-black rounded-2xl dark:bg-white dark:text-black"
+      >
+        글쓰기
+      </button>
       {postInfo ? (
         <>
           {postInfo.posts.map((post) => (
