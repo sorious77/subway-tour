@@ -32,8 +32,9 @@ const Login = () => {
         })
       ).json();
 
+      console.log(result);
+
       if (result.error) {
-        console.log("Login fail");
         setError(result.error);
       } else {
         setUser(result);

@@ -27,7 +27,7 @@ const Gacha = () => {
 
   useEffect(() => {
     (async () => {
-      const stations: Station[] = await (await fetch("/api/stations")).json();
+      const stations = await (await fetch("/api/stations")).json();
 
       setStations(stations);
     })();
@@ -39,8 +39,6 @@ const Gacha = () => {
     }
 
     let idx = Math.floor(Math.random() * stations!.length);
-
-    console.log(idx);
 
     setStation(stations![idx]);
   };

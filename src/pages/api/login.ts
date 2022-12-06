@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Handler from "../../libs/Handler";
+import axios from "axios";
 
 type UserData = {
   email?: string;
@@ -11,31 +12,24 @@ type Error = {
   error: string;
 };
 
-const users: UserData[] = [
-  {
-    email: "test@gmail.com",
-    password: "1111",
-    name: "test",
-  },
-];
-
 const LoginHandler = async (
   req: NextApiRequest,
   res: NextApiResponse<UserData | Error>
 ) => {
-  await new Promise((r) => setTimeout(r, 2000));
-
   const { email, password } = JSON.parse(req.body);
 
-  let matchedUser = null;
-  users.forEach((user) => {
-    if (user.email === email && user.password === password) {
-      matchedUser = user;
-      return;
-    }
+  const result = await axios({
+    url: `${process.env.BASE_URL}/users/login`,
+    data: {
+      email,
+      password,
+    },
+    method: "post",
   });
 
-  if (matchedUser) {
+  const matchedUser = result.data;
+
+  if (matchedUser && matchedUser.email) {
     return res.status(200).json(matchedUser);
   }
 

@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Handler from "../../libs/Handler";
+import axios from "axios";
 
 interface Station {
   station_nm: string;
@@ -7,33 +8,16 @@ interface Station {
   visited: boolean;
 }
 
-const stations: Station[] = [
-  {
-    station_nm: "남영",
-    station_nm_eng: "Namyeong",
-    visited: false,
-  },
-  {
-    station_nm: "용산",
-    station_nm_eng: "Yongsan",
-    visited: false,
-  },
-  {
-    station_nm: "노량진",
-    station_nm_eng: "Noryangjin",
-    visited: true,
-  },
-];
-
 const StationHandler = async (
   req: NextApiRequest,
   res: NextApiResponse<Station[]>
 ) => {
-  await new Promise((r) => setTimeout(r, 2000));
+  const stations = await axios({
+    method: "get",
+    url: `${process.env.BASE_URL}/stations/gacha`,
+  });
 
-  const notVisited = stations.filter((station) => !station.visited);
-
-  return res.status(200).json(notVisited);
+  return res.status(200).json(stations.data);
 };
 
 export default Handler("GET", StationHandler);
