@@ -49,9 +49,9 @@ const Gacha = () => {
         <title>Subway Tour | 뽑기</title>
       </Head>
       {station && (
-        <div className="flex flex-col mb-10 text-center">
+        <div className="flex flex-col mb-10 text-center items-center">
           <div className="text-4xl">{station?.station_nm}</div>
-          <div className="text-xl">{station?.station_nm_eng}</div>
+          <div className="text-xl text-gray-500">{station?.station_nm_eng}</div>
           <Link
             href={`https://map.naver.com/v5/search/${station.station_nm}역`}
             target="_blank"
