@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import Handler from "../../libs/Handler";
+import Handler from "../../../libs/Handler";
 import axios from "axios";
 
 interface Station {
@@ -8,7 +8,7 @@ interface Station {
   visited: boolean;
 }
 
-const StationHandler = async (
+const GachaHandler = async (
   req: NextApiRequest,
   res: NextApiResponse<Station[]>
 ) => {
@@ -20,4 +20,4 @@ const StationHandler = async (
   return res.status(200).json(stations.data);
 };
 
-export default Handler("GET", StationHandler);
+export default Handler("GET", GachaHandler);
