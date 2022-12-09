@@ -37,7 +37,7 @@ const List = () => {
         onClick={() => {
           router.push("/write");
         }}
-        className="self-end px-4 my-4 mr-10 text-white bg-black rounded-2xl dark:bg-white dark:text-black"
+        className="self-end px-4 my-4 mr-2 text-white bg-black rounded-2xl dark:bg-white dark:text-black"
       >
         글쓰기
       </button>
