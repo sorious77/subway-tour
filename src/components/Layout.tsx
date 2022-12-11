@@ -7,7 +7,7 @@ type Props = {
 
 const Layout = ({ children }: Props) => {
   return (
-    <div className="flex flex-col w-full h-full text-black transition-all duration-300 ease-in bg-white dark:text-white dark:bg-black">
+    <div className="flex flex-col w-full h-full text-black transition-all duration-300 ease-in bg-white dark:text-white dark:bg-zinc-700">
       <NavBar />
       <div className="self-center w-full h-full">{children}</div>
     </div>

@@ -8,10 +8,10 @@ const NavBar = () => {
   const [user, setUser] = useRecoilState(userState);
 
   return (
-    <div className="flex items-center justify-between px-6 py-5 dark:bg-gray-800">
+    <div className="flex items-center justify-between px-6 py-5 dark:bg-zinc-800">
       <div className="text-2xl">
         <Link href="/" className="hover:text-gray-700 dark:hover:text-gray-200">
-          Subway Tour
+          🚇 Subway Tour
         </Link>
       </div>
       <div className={`flex justify-between ${user ? "w-1/3" : "w-1/6"}`}>
