@@ -7,12 +7,10 @@ type PostData = {
   station_nm: string;
   visitedAt: string;
   content: string;
+  author: string;
 };
 
-const WriteHandler = async (
-  req: NextApiRequest,
-  res: NextApiResponse<PostData>
-) => {
+const WriteHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const newPost: PostData = JSON.parse(req.body);
 
   const result = await axios({

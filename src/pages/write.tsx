@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRecoilValue } from "recoil";
+import { userState } from "components/states";
 
+interface User {
+  email: string;
+  password: string;
+  name: string;
+}
 interface Station {
   station_nm: string;
   station_nm_eng: string;
@@ -12,9 +19,12 @@ type InputValue = {
   station_nm: string;
   visitedAt: string;
   content: string;
+  author: string;
 };
 
 const Write = () => {
+  const user: User | null = useRecoilValue(userState);
+
   const {
     register,
     handleSubmit,
@@ -67,7 +77,7 @@ const Write = () => {
       const result = await (
         await fetch("/api/post/write", {
           method: "POST",
-          body: JSON.stringify(data),
+          body: JSON.stringify({ ...data, author: user!.name }),
         })
       ).json();
 
