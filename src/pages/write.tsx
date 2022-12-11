@@ -7,6 +7,13 @@ interface Station {
   visited: boolean;
 }
 
+type InputValue = {
+  title: string;
+  station_nm: string;
+  visitedAt: string;
+  content: string;
+};
+
 const Write = () => {
   const {
     register,
@@ -15,12 +22,12 @@ const Write = () => {
     reset,
     watch,
     setValue,
-  } = useForm();
+  } = useForm<InputValue>();
 
   const [stations, setStations] = useState<Station[]>([]);
   const [filteredStations, setFilteredStations] = useState<Station[]>([]);
 
-  const watchStation: string = watch("station");
+  const watchStation = watch("station_nm");
 
   useEffect(() => {
     (async () => {
@@ -55,43 +62,70 @@ const Write = () => {
     })();
   }, [watchStation]);
 
+  const writePost = async (data: InputValue) => {
+    try {
+      const result = await (
+        await fetch("/api/post/write", {
+          method: "POST",
+          body: JSON.stringify(data),
+        })
+      ).json();
+
+      console.log(result);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
-    <div className="flex justify-center h-full">
-      <div className="w-2/3">
+    <div className="flex justify-center h-full py-10 bg-gray-50 dark:bg-inherit">
+      <div className="w-2/3 p-2">
         <form
-          className="flex flex-col items-center w-full h-full border"
-          onSubmit={handleSubmit((data) => {
-            console.log(data);
-            console.log(errors);
+          className="flex flex-col items-center w-full h-full"
+          onSubmit={handleSubmit(async (data) => {
+            writePost(data);
           })}
         >
           <input
             type="text"
             placeholder="제목"
-            className="w-full p-2 text-2xl focus:outline-sky-300"
+            className="w-full p-2 text-2xl focus:outline-none"
             {...register("title", {
               required: "제목을 입력하세요.",
             })}
           />
-          <div className="flex w-full px-2 mx-2 my-4">
+          {errors.title && (
+            <small
+              role="alert"
+              className="flex items-center h-6 mb-4 -mt-2 text-red-400 self-start"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <span className="ml-1">{errors.title.message as string}</span>
+            </small>
+          )}
+          <div className="flex w-full mx-2 my-4 items-center justify-between">
             <div
-              className={`flex w-2/3 flex-col mr-2 ${
-                filteredStations.length > 0 &&
-                "border-2 border-gray-100 rounded"
+              className={`flex w-5/6 flex-col mr-2 border-2 border-gray-100 rounded ${
+                filteredStations.length > 0 && "relative"
               }`}
             >
-              <div
-                className={`flex justify-between border-gray-100 ${
-                  filteredStations.length > 0
-                    ? "border-b-2"
-                    : "border-2 rounded"
-                }`}
-              >
+              <div className={`flex justify-between border-gray-100`}>
                 <input
                   type="text"
                   placeholder="지하철역"
                   className="focus:outline-none h-8 w-11/12 px-2"
-                  {...register("station", {
+                  {...register("station_nm", {
                     required: "지하철 역 이름을 입력하세요.",
                   })}
                 />
@@ -122,7 +156,7 @@ const Write = () => {
               </div>
               {filteredStations.length > 0 && (
                 <ul
-                  className={`overflow-y-scroll z-10 px-2 hide-scroll ${
+                  className={`overflow-y-scroll px-2 hide-scroll z-10 absolute top-8 bg-gray-50 dark:bg-zinc-800 rounded w-full border-2 border-gray-100 ${
                     filteredStations.length > 6 && "h-40"
                   }`}
                 >
@@ -131,7 +165,7 @@ const Write = () => {
                       key={idx}
                       className="cursor-pointer"
                       onClick={() => {
-                        setValue("station", station.station_nm);
+                        setValue("station_nm", station.station_nm);
                       }}
                     >
                       {station.station_nm}
@@ -140,25 +174,23 @@ const Write = () => {
                 </ul>
               )}
             </div>
-            <input type="date" className="bg-gray-500 h-8" />
+            <input type="date" className="h-8" {...register("visitedAt")} />
           </div>
 
-          <input
-            type="text"
+          <textarea
             placeholder="내용"
-            className="w-full p-2 focus:outline-gray-300 z-0"
+            className="w-full p-2 focus:outline-sky-300 z-0 h-full bg-inherit border-2 border-gray-200 rounded"
+            {...register("content")}
           />
-          <input type="submit" value="Submit" className="cursor-pointer" />
+          <input
+            type="submit"
+            value="Submit"
+            className="cursor-pointer bg-black dark:bg-white text-white dark:text-black rounded py-2 px-4 mt-2"
+          />
         </form>
       </div>
     </div>
   );
 };
-
-// title
-// content
-// visitedAt
-// createdAt
-// station
 
 export default Write;
