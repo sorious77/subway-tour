@@ -43,7 +43,7 @@ const NavBar = () => {
             </svg>
           )}
         </button>
-        <div className="px-4 text-white bg-black cursor-pointer dark:text-black dark:bg-white rounded-xl hover:bg-gray-700 dark:hover:bg-gray-200">
+        <div className="px-4 text-white transition-colors ease-in-out cursor-pointer bg-rose-400 dark:text-black dark:bg-white rounded-xl hover:bg-rose-500 dark:hover:bg-gray-200">
           {user ? (
             <span
               onClick={() => {

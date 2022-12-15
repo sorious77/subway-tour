@@ -42,13 +42,31 @@ const Post = () => {
       {loading ? (
         "Loading..."
       ) : (
-        <>
+        <div className="relative">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="absolute w-6 h-6 cursor-pointer -top-10"
+            onClick={() => {
+              router.back();
+            }}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+            />
+          </svg>
+
           <h1 className="mb-6 text-3xl">{post?.title}</h1>
-          <div className="mb-2 text-lg">
+          <div className="mb-4">
             <Link
               href={`https://map.naver.com/v5/search/${post?.station_nm}역`}
               target="_blank"
-              className="px-2 text-white bg-black rounded dark:bg-white dark:text-black"
+              className="p-2 text-white rounded bg-rose-400 dark:bg-white dark:text-black"
             >
               #{post?.station_nm}
             </Link>
@@ -65,7 +83,7 @@ const Post = () => {
               제2항의 재판관중 3인은 국회에서 선출하는 자를, 3인은 대법원장이 지명하는 자를 임명한다. 탄핵결정은 공직으로부터 파면함에 그친다. 그러나, 이에 의하여 민사상이나 형사상의 책임이 면제되지는 아니한다.`
             )}
           </div>
-        </>
+        </div>
       )}
     </div>
   );
