@@ -59,7 +59,7 @@ const Login = () => {
         <input
           type="text"
           placeholder="이메일 주소"
-          className="px-4 py-2 mt-2 mb-4 border border-gray-400 rounded dark:border dark:border-white focus:outline-sky-300 dark:focus:outline-sky-800"
+          className="px-4 py-2 mt-2 mb-4 border border-gray-400 rounded dark:border dark:border-white focus:outline-rose-300 dark:focus:outline-rose-500"
           {...register("email", {
             required: "이메일 주소를 입력하세요.",
             pattern: {
@@ -92,7 +92,7 @@ const Login = () => {
         <input
           type="password"
           placeholder="비밀번호"
-          className="px-4 py-2 mt-2 mb-4 border border-gray-400 rounded dark:border dark:border-white focus:outline-sky-300 dark:focus:outline-sky-800"
+          className="px-4 py-2 mt-2 mb-4 border border-gray-400 rounded dark:border dark:border-white focus:outline-rose-300 dark:focus:outline-rose-800"
           {...register("password", {
             required: "비밀번호를 입력하세요.",
           })}
@@ -120,7 +120,7 @@ const Login = () => {
         <input
           type="submit"
           value="로그인하기"
-          className="px-4 py-2 text-white cursor-pointer rounded-3xl bg-sky-400 disabled:cursor-default disabled:bg-sky-200 dark:bg-sky-600 dark:disabled:bg-sky-400"
+          className="px-4 py-2 text-white cursor-pointer rounded-3xl bg-rose-400 disabled:cursor-default disabled:bg-rose-200 dark:disabled:bg-rose-400"
           disabled={isSubmitting || loading}
         />
         {error && (

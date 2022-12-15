@@ -30,7 +30,7 @@ const List = () => {
           //router.push("/write");
           setCurrentPage((prev) => prev + 1);
         }}
-        className="fixed flex items-center self-end p-4 text-white bg-black rounded-full right-10 bottom-10 dark:bg-white dark:text-black"
+        className="fixed flex items-center self-end p-4 text-white transition-colors duration-300 ease-in-out rounded-full bg-rose-400 right-10 bottom-10 dark:bg-white dark:text-rose-400 hover:bg-rose-500 dark:hover:text-rose-600"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -78,7 +78,7 @@ const Gacha = () => {
       {stations ? (
         <button
           onClick={handleGacha}
-          className="px-4 py-2 text-white bg-black rounded dark:bg-white dark:text-black hover:bg-gray-600 hover:transition-colors hover:duration-500 dark:hover:bg-sky-500"
+          className="px-4 py-2 text-white rounded bg-rose-400 dark:bg-white dark:text-black hover:bg-rose-500 hover:transition-colors hover:duration-500 dark:hover:bg-rose-200"
         >
           뽑아보자구!
         </button>
