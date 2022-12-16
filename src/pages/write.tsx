@@ -88,18 +88,18 @@ const Write = () => {
   };
 
   return (
-    <div className="flex justify-center h-full py-10 bg-gray-50 dark:bg-inherit">
-      <div className="w-2/3 p-2">
+    <div className="flex justify-center h-full dark:bg-inherit">
+      <div className="w-2/3 pb-4 -mt-6">
         <form
           className="flex flex-col items-center w-full h-full"
           onSubmit={handleSubmit(async (data) => {
-            writePost(data);
+            // writePost(data);
           })}
         >
           <input
             type="text"
             placeholder="제목"
-            className="w-full p-2 text-2xl focus:outline-none"
+            className="w-full p-2 text-2xl border-2 border-gray-100 rounded focus:outline-rose-400"
             {...register("title", {
               required: "제목을 입력하세요.",
             })}
@@ -107,7 +107,7 @@ const Write = () => {
           {errors.title && (
             <small
               role="alert"
-              className="flex items-center h-6 mb-4 -mt-2 text-red-400 self-start"
+              className="flex items-center self-start h-6 text-red-400"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -124,7 +124,7 @@ const Write = () => {
               <span className="ml-1">{errors.title.message as string}</span>
             </small>
           )}
-          <div className="flex w-full mx-2 my-4 items-center justify-between">
+          <div className="flex items-center justify-between w-full mx-2 my-4">
             <div
               className={`flex w-5/6 flex-col mr-2 border-2 border-gray-100 rounded ${
                 filteredStations.length > 0 && "relative"
@@ -134,13 +134,13 @@ const Write = () => {
                 <input
                   type="text"
                   placeholder="지하철역"
-                  className="focus:outline-none h-8 w-11/12 px-2"
+                  className="w-11/12 h-8 px-2 focus:outline-none"
                   {...register("station_nm", {
                     required: "지하철 역 이름을 입력하세요.",
                   })}
                 />
                 <div
-                  className="px-2 cursor-pointer h-8 flex items-center"
+                  className="flex items-center h-8 px-2 cursor-pointer"
                   onClick={() => {
                     reset((data) => ({
                       ...data,
@@ -175,6 +175,7 @@ const Write = () => {
                       key={idx}
                       className="cursor-pointer"
                       onClick={() => {
+                        setFilteredStations([]);
                         setValue("station_nm", station.station_nm);
                       }}
                     >
@@ -186,16 +187,17 @@ const Write = () => {
             </div>
             <input type="date" className="h-8" {...register("visitedAt")} />
           </div>
+          {errors.station_nm && <div>Error!</div>}
 
           <textarea
             placeholder="내용"
-            className="w-full p-2 focus:outline-sky-300 z-0 h-full bg-inherit border-2 border-gray-200 rounded"
+            className="z-0 w-full h-full p-2 border-2 border-gray-200 rounded focus:outline-rose-300 bg-inherit"
             {...register("content")}
           />
           <input
             type="submit"
             value="Submit"
-            className="cursor-pointer bg-black dark:bg-white text-white dark:text-black rounded py-2 px-4 mt-2"
+            className="px-4 py-2 mt-2 text-white rounded cursor-pointer bg-rose-400 dark:bg-white dark:text-black"
           />
         </form>
       </div>
