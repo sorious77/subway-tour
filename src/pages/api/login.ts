@@ -35,7 +35,7 @@ const LoginHandler = async (
 
   return res
     .status(200)
-    .json({ error: "일치하는 회원 정보가 존재하지 않습니다." });
+    .json({ error: "이메일 주소 또는 비밀번호를 확인해주세요." });
 };
 
 export default Handler("POST", LoginHandler);
