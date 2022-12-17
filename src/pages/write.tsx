@@ -5,8 +5,7 @@ import { userState } from "components/states";
 
 interface User {
   email: string;
-  password: string;
-  name: string;
+  nickname: string;
 }
 interface Station {
   station_nm: string;
@@ -20,6 +19,7 @@ type InputValue = {
   visitedAt: string;
   content: string;
   author: string;
+  thumbnail: any;
 };
 
 const Write = () => {
@@ -36,8 +36,10 @@ const Write = () => {
 
   const [stations, setStations] = useState<Station[]>([]);
   const [filteredStations, setFilteredStations] = useState<Station[]>([]);
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
 
   const watchStation = watch("station_nm");
+  const watchThumbnail = watch("thumbnail");
 
   useEffect(() => {
     (async () => {
@@ -72,23 +74,30 @@ const Write = () => {
     })();
   }, [watchStation]);
 
+  useEffect(() => {
+    if (watchThumbnail && watchThumbnail.length > 0) {
+      const file = watchThumbnail[0];
+
+      setThumbnailUrl(URL.createObjectURL(file));
+    }
+  }, [watchThumbnail]);
+
   const writePost = async (data: InputValue) => {
     try {
-      const result = await (
-        await fetch("/api/post/write", {
-          method: "POST",
-          body: JSON.stringify({ ...data, author: user!.name }),
-        })
-      ).json();
-
-      console.log(result);
+      // const result = await (
+      //   await fetch("/api/post/write", {
+      //     method: "POST",
+      //     body: JSON.stringify({ ...data, author: user!.name }),
+      //   })
+      // ).json();
+      // console.log(result);
     } catch (e) {
       console.log(e);
     }
   };
 
   return (
-    <div className="flex justify-center h-full dark:bg-inherit">
+    <div className="flex items-center h-full dark:bg-inherit flex-col">
       <div className="w-2/3 pb-4 -mt-6">
         <form
           className="flex flex-col items-center w-full h-full"
@@ -188,16 +197,23 @@ const Write = () => {
             <input type="date" className="h-8" {...register("visitedAt")} />
           </div>
           {errors.station_nm && <div>Error!</div>}
-
           <textarea
             placeholder="내용"
-            className="z-0 w-full h-full p-2 border-2 border-gray-200 rounded focus:outline-rose-300 bg-inherit"
+            className="z-0 w-full p-2 border-2 border-gray-200 rounded focus:outline-rose-300 bg-inherit"
+            rows={15}
             {...register("content")}
           />
           <input
+            type="file"
+            className="mt-2 h-16 text-center"
+            {...register("thumbnail")}
+            accept="image/*"
+          />
+          <img src={thumbnailUrl} className="h-80 mt-0 mb-10" />
+          <input
             type="submit"
             value="Submit"
-            className="px-4 py-2 mt-2 text-white rounded cursor-pointer bg-rose-400 dark:bg-white dark:text-black"
+            className="px-4 py-2 text-white rounded cursor-pointer bg-rose-400 dark:bg-white dark:text-black"
           />
         </form>
       </div>
