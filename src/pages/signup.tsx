@@ -11,6 +11,7 @@ type InputValue = {
 const Signup = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [toggleToolTip, setToggleToolTip] = useState(false);
 
   const {
     register,
@@ -57,44 +58,40 @@ const Signup = () => {
             <span className="ml-1">{errors.email.message}</span>
           </small>
         )}
-        <label>닉네임</label>
-        <input
-          type="text"
-          placeholder="닉네임"
-          maxLength={10}
-          {...register("nickname", {
-            pattern: {
-              value: /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/,
-              message: "닉네임은 한글, 영어, 숫자만 사용 가능합니다.",
-            },
-            maxLength: {
-              value: 10,
-              message: "닉네임은 최대 10자리 입니다.",
-            },
-          })}
-          className="px-4 py-2 mt-2 mb-4 border border-gray-400 rounded dark:border dark:border-white focus:outline-rose-300 dark:focus:outline-rose-800"
-        />
-        {errors.nickname && (
-          <small
-            role="alert"
-            className="flex items-center mb-4 -mt-2 text-red-400"
-          >
+        <label className="flex items-center">
+          비밀번호
+          <div className="relative">
             <svg
               xmlns="http://www.w3.org/2000/svg"
+              fill="none"
               viewBox="0 0 24 24"
-              fill="currentColor"
-              className="w-6 h-6"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6 ml-2 text-rose-400 dark:text-white"
+              onMouseEnter={() => {
+                setToggleToolTip(true);
+              }}
+              onMouseLeave={() => {
+                setToggleToolTip(false);
+              }}
             >
               <path
-                fillRule="evenodd"
-                d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"
-                clipRule="evenodd"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
               />
             </svg>
-            <span className="ml-1">{errors.nickname.message}</span>
-          </small>
-        )}
-        <label>비밀번호</label>
+            {toggleToolTip && (
+              <div className="absolute text-xs top-0 left-8 bg-white dark:text-white dark:bg-zinc-800 border border-gray-100 rounded w-80 h-auto p-2">
+                비밀번호는 8자 이상 15자 이하로 설정해주세요.
+                <br />
+                영문자, 특수문자, 숫자를 각각 한 글자 이상 입력해주세요.
+                <br />
+                특수문자는 !, @, #, $, %, ^, &, +, = 만 가능합니다.
+              </div>
+            )}
+          </div>
+        </label>
         <input
           type="password"
           placeholder="비밀번호"
@@ -105,7 +102,7 @@ const Signup = () => {
             pattern: {
               value:
                 /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/,
-              message: "특수문자, 문자, 숫자를 각각 한 글자 이상 입력하세요.",
+              message: "영문자, 특수문자, 숫자를 각각 한 글자 이상 입력하세요.",
             },
             minLength: {
               value: 8,
