@@ -6,9 +6,11 @@ import Link from "next/link";
 import Head from "next/head";
 
 interface Station {
-  station_nm: string;
-  station_nm_eng: string;
-  visited: boolean;
+  name: string;
+  code: number;
+  lat: number;
+  lng: number;
+  line: string;
 }
 
 const Gacha = () => {
@@ -40,6 +42,8 @@ const Gacha = () => {
 
     let idx = Math.floor(Math.random() * stations!.length);
 
+    console.log(stations![idx]);
+
     setStation(stations![idx]);
   };
 
@@ -50,10 +54,10 @@ const Gacha = () => {
       </Head>
       {station && (
         <div className="flex flex-col items-center mb-10 text-center">
-          <div className="text-4xl">{station?.station_nm}</div>
-          <div className="text-xl text-gray-500">{station?.station_nm_eng}</div>
+          <div className="text-4xl">{station?.name}</div>
+          <div className="text-xl text-gray-500">{station?.line}</div>
           <Link
-            href={`https://map.naver.com/v5/search/${station.station_nm}역`}
+            href={`https://map.naver.com/v5/search/${station.name}역`}
             target="_blank"
             className="flex mt-10"
           >

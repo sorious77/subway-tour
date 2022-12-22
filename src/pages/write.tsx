@@ -8,9 +8,11 @@ interface User {
   nickname: string;
 }
 interface Station {
-  station_nm: string;
-  station_nm_eng: string;
-  visited: boolean;
+  name: string;
+  code: number;
+  lat: number;
+  lng: number;
+  line: string;
 }
 
 type InputValue = {
@@ -57,15 +59,10 @@ const Write = () => {
       }
 
       const filtered = stations.filter((station) => {
-        return (
-          station.station_nm.includes(watchStation) ||
-          station.station_nm_eng
-            .toLowerCase()
-            .includes(watchStation.toLowerCase())
-        );
+        return station.name.includes(watchStation);
       });
 
-      if (filtered.length === 1 && filtered[0].station_nm === watchStation) {
+      if (filtered.length === 1 && filtered[0].name === watchStation) {
         setFilteredStations([]);
         return;
       }
@@ -185,10 +182,10 @@ const Write = () => {
                       className="cursor-pointer"
                       onClick={() => {
                         setFilteredStations([]);
-                        setValue("station_nm", station.station_nm);
+                        setValue("station_nm", station.name);
                       }}
                     >
-                      {station.station_nm}
+                      {station.name}
                     </li>
                   ))}
                 </ul>

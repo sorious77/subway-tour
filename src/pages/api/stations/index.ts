@@ -3,9 +3,11 @@ import Handler from "../../../libs/Handler";
 import axios from "axios";
 
 interface Station {
-  station_nm: string;
-  station_nm_eng: string;
-  visited: boolean;
+  name: string;
+  code: number;
+  lat: number;
+  lng: number;
+  line: string;
 }
 
 const StationHandler = async (
