@@ -4,6 +4,13 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Head from "next/head";
+import {
+  Map,
+  MapMarker,
+  ZoomControl,
+  CustomOverlayMap,
+  MapInfoWindow,
+} from "react-kakao-maps-sdk";
 
 interface Station {
   name: string;
@@ -18,12 +25,13 @@ const Gacha = () => {
   const router = useRouter();
   const [stations, setStations] = useState<Station[]>();
   const [station, setStation] = useState<Station>();
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     (() => {
-      if (!user) {
-        router.push("/");
-      }
+      // if (!user) {
+      //   router.push("/");
+      // }
     })();
   }, [user]);
 
@@ -42,41 +50,53 @@ const Gacha = () => {
 
     let idx = Math.floor(Math.random() * stations!.length);
 
-    console.log(stations![idx]);
-
     setStation(stations![idx]);
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-full">
+    <div className="flex flex-col items-center justify-center w-full h-full">
       <Head>
         <title>Subway Tour | 뽑기</title>
       </Head>
       {station && (
-        <div className="flex flex-col items-center mb-10 text-center">
+        <div className="flex flex-col items-center w-full mb-10 text-center">
           <div className="text-4xl">{station?.name}</div>
           <div className="text-xl text-gray-500">{station?.line}</div>
-          <Link
-            href={`https://map.naver.com/v5/search/${station.name}역`}
-            target="_blank"
-            className="flex mt-10"
+          <Map
+            center={{ lat: station?.lat, lng: station?.lng }}
+            level={7}
+            className="w-5/6 mt-8 border border-gray-100 rounded h-96"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
+            <ZoomControl position={2} />
+            <MapMarker
+              position={{ lat: station?.lat, lng: station?.lng }}
+              onClick={() => {
+                setIsOpen((isOpen) => !isOpen);
+              }}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"
-              />
-            </svg>
-            <span className="ml-2">지도로 확인하기</span>
-          </Link>
+              {isOpen && (
+                <div className="">
+                  {`🚇 ${station.name}`}
+                  <Link href="https://www.naver.com" target={"_blank"}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"
+                      />
+                    </svg>
+                  </Link>
+                </div>
+              )}
+            </MapMarker>
+          </Map>
         </div>
       )}
       {stations ? (
