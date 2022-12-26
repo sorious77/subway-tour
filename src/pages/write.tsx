@@ -94,7 +94,7 @@ const Write = () => {
   };
 
   return (
-    <div className="flex items-center h-full dark:bg-inherit flex-col">
+    <div className="flex flex-col items-center h-full dark:bg-inherit">
       <div className="w-2/3 pb-4 -mt-6">
         <form
           className="flex flex-col items-center w-full h-full"
@@ -143,6 +143,12 @@ const Write = () => {
                   className="w-11/12 h-8 px-2 focus:outline-none"
                   {...register("station_nm", {
                     required: "지하철 역 이름을 입력하세요.",
+                    validate: {
+                      isExist: (name) =>
+                        stations.filter((station) => {
+                          return station.name === name;
+                        }).length > 0 || "존재하지 않는 역입니다",
+                    },
                   })}
                 />
                 <div
@@ -182,7 +188,9 @@ const Write = () => {
                       className="cursor-pointer"
                       onClick={() => {
                         setFilteredStations([]);
-                        setValue("station_nm", station.name);
+                        setValue("station_nm", station.name, {
+                          shouldValidate: true,
+                        });
                       }}
                     >
                       {station.name}
@@ -191,22 +199,45 @@ const Write = () => {
                 </ul>
               )}
             </div>
-            <input type="date" className="h-8" {...register("visitedAt")} />
+            <div className="grid items-center grid-cols-5">
+              <label htmlFor="visitedAt" className="col-span-2 pr-4 text-right">
+                방문일자
+              </label>
+              <input
+                type="date"
+                className="h-8 col-span-3"
+                {...register("visitedAt", {
+                  required: "방문일자를 입력하세요",
+                })}
+                id="visitedAt"
+                name="visitedAt"
+                max={new Date().toJSON().slice(0, 10).replace(/-/g, "-")}
+              />
+            </div>
           </div>
-          {errors.station_nm && <div>Error!</div>}
+          <div className="grid w-full grid-cols-6 mb-4 -mt-4 text-red-400">
+            <div className="col-span-5">
+              {errors.station_nm && (
+                <small className="pl-2">{errors.station_nm.message}</small>
+              )}
+            </div>
+            <div>
+              {errors.visitedAt && <small>{errors.visitedAt.message}</small>}
+            </div>
+          </div>
           <textarea
             placeholder="내용"
-            className="z-0 w-full p-2 border-2 border-gray-200 rounded focus:outline-rose-300 bg-inherit"
+            className="z-0 w-full p-2 border-2 border-gray-200 rounded focus:outline-rose-400 bg-inherit"
             rows={15}
             {...register("content")}
           />
           <input
             type="file"
-            className="mt-2 h-16 text-center"
+            className="h-16 mt-2 text-center"
             {...register("thumbnail")}
             accept="image/*"
           />
-          <img src={thumbnailUrl} className="h-80 mt-0 mb-10" />
+          <img src={thumbnailUrl} className="mt-0 mb-10 h-80" />
           <input
             type="submit"
             value="Submit"
