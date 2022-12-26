@@ -199,13 +199,13 @@ const Write = () => {
                 </ul>
               )}
             </div>
-            <div className="grid items-center grid-cols-5">
-              <label htmlFor="visitedAt" className="col-span-2 pr-4 text-right">
+            <div className="grid items-center grid-cols-8">
+              <label htmlFor="visitedAt" className="col-span-3 pr-2 text-right">
                 방문일자
               </label>
               <input
                 type="date"
-                className="h-8 col-span-3"
+                className="h-8 col-span-5"
                 {...register("visitedAt", {
                   required: "방문일자를 입력하세요",
                 })}
