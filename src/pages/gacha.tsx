@@ -59,13 +59,13 @@ const Gacha = () => {
         <title>Subway Tour | 뽑기</title>
       </Head>
       {station && (
-        <div className="flex flex-col items-center w-full mb-10 text-center">
+        <div className="flex flex-col items-center w-full mb-10 justify-center text-center h-2/3">
           <div className="text-4xl">{station?.name}</div>
           <div className="text-xl text-gray-500">{station?.line}</div>
           <Map
             center={{ lat: station?.lat, lng: station?.lng }}
             level={7}
-            className="w-5/6 mt-8 border border-gray-100 rounded h-96"
+            className="w-5/6 mt-8 border border-gray-100 rounded h-2/3"
           >
             <ZoomControl position={2} />
             <MapMarker
