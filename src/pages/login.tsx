@@ -39,6 +39,13 @@ const Login = () => {
         setError(result.error);
       } else {
         setUser(result);
+
+        // TODO session으로 변경
+        localStorage.setItem(
+          "user",
+          JSON.stringify({ email: result.email, nickname: result.nickname })
+        );
+
         router.push("/");
       }
     } catch (e) {

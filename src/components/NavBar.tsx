@@ -48,6 +48,9 @@ const NavBar = () => {
             <span
               onClick={() => {
                 setUser(null);
+
+                // TODO session으로 변경
+                localStorage.removeItem("user");
               }}
             >
               로그아웃
@@ -69,6 +72,12 @@ const NavBar = () => {
               className="hover:text-gray-700 dark:hover:text-gray-200"
             >
               다이어리
+            </Link>
+            <Link
+              href="/mypage"
+              className="hover:text-gray-700 dark:hover:text-gray-200"
+            >
+              내 정보
             </Link>
           </>
         )}
