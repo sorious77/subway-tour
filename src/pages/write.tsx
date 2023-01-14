@@ -237,7 +237,10 @@ const Write = () => {
             {...register("thumbnail")}
             accept="image/*"
           />
-          <img src={thumbnailUrl} className="mt-0 mb-10 h-80" />
+          <img
+            src={thumbnailUrl}
+            className={`mt-0 mb-10 ${thumbnailUrl ? "h-80" : ""}`}
+          />
           <input
             type="submit"
             value="Submit"
