@@ -17,7 +17,7 @@ const ListHandler = async (
     query: { page },
   } = req;
 
-  const { data } = await axios.get(`${process.env.BASE_URL}/posts/${page}`);
+  const { data } = await axios.get(`${process.env.BASE_URL}/lists/${page}`);
 
   return res.status(200).json(data);
 };

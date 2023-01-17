@@ -16,7 +16,7 @@ const GachaHandler = async (
 ) => {
   const stations = await axios({
     method: "get",
-    url: `${process.env.BASE_URL}/stations/gacha`,
+    url: `${process.env.BASE_URL}/stations/`,
   });
 
   return res.status(200).json(stations.data);
