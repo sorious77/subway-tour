@@ -4,9 +4,14 @@ import { useEffect, useState } from "react";
 
 interface Post {
   title: string;
-  id: string;
+  _id: string;
   content: string;
   thumbnail?: string;
+  station_nm: string;
+  author: string;
+  visitedAt: string;
+  createdAt: string;
+  id: string;
 }
 
 const List = () => {
@@ -19,7 +24,7 @@ const List = () => {
     (async () => {
       const result = await (await fetch(`/api/list/${currentPage}`)).json();
 
-      setPosts([...posts, ...result]);
+      setPosts([...posts, ...result.posts]);
     })();
   }, [currentPage]);
 
@@ -51,9 +56,9 @@ const List = () => {
         <div className="w-full">
           {posts.map((post) => (
             <Post
-              key={post.id}
+              key={post._id}
               title={post.title}
-              id={post.id}
+              id={post._id}
               content={post.content}
             />
           ))}
