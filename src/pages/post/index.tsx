@@ -2,6 +2,10 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
+interface User {
+  nickname: string;
+}
+
 interface PostInfo {
   id: string;
   title: string;
@@ -10,6 +14,7 @@ interface PostInfo {
   createdAt: string;
   visitedAt: string;
   station_nm: string;
+  user: User;
 }
 
 const Post = () => {
@@ -72,14 +77,13 @@ const Post = () => {
             </Link>
           </div>
           <div className="mb-10">
-            <span className="font-semibold">{post?.author}</span>
+            <span className="font-semibold">{post?.user.nickname!}</span>
             <span className="ml-2 text-xs text-gray-600 dark:text-gray-300">
-              방문일 - {getDate(post?.visitedAt!)} / 작성일 - {getDate(post?.createdAt!)}
+              방문일 - {getDate(post?.visitedAt!)} / 작성일 -{" "}
+              {getDate(post?.createdAt!)}
             </span>
           </div>
-          <div>
-            {post?.content}
-          </div>
+          <div>{post?.content}</div>
         </div>
       )}
     </div>

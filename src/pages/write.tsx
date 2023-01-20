@@ -86,7 +86,7 @@ const Write = () => {
       const result = await (
         await fetch("/api/post/write", {
           method: "POST",
-          body: JSON.stringify({ ...data, author: user!.nickname }),
+          body: JSON.stringify({ ...data, author: user!.email }),
         })
       ).json();
 
