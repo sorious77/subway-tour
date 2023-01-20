@@ -33,8 +33,6 @@ const Login = () => {
         })
       ).json();
 
-      console.log(result);
-
       if (result.error) {
         setError(result.error);
       } else {
@@ -56,7 +54,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-full flex-col">
+    <div className="flex flex-col items-center justify-center h-full">
       <form
         className="flex flex-col w-1/3"
         onSubmit={handleSubmit(async (data) => {
@@ -149,12 +147,12 @@ const Login = () => {
           </small>
         )}
       </form>
-      <div className="grid grid-cols-3 mt-10 items-center w-1/3">
-        <div className="border-t-gray-200 border-t" />
+      <div className="grid items-center w-1/3 grid-cols-3 mt-10">
+        <div className="border-t border-t-gray-200" />
         <Link href="/signup" className="text-center cursor-pointer">
           회원가입하기
         </Link>
-        <div className="border-t-gray-200 border-t" />
+        <div className="border-t border-t-gray-200" />
       </div>
     </div>
   );
