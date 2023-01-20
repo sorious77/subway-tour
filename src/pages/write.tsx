@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilValue } from "recoil";
 import { userState } from "components/states";
+import { useRouter } from "next/router";
 
 interface User {
   email: string;
@@ -26,6 +27,7 @@ type InputValue = {
 
 const Write = () => {
   const user: User | null = useRecoilValue(userState);
+  const router = useRouter();
 
   const {
     register,
@@ -81,13 +83,14 @@ const Write = () => {
 
   const writePost = async (data: InputValue) => {
     try {
-      // const result = await (
-      //   await fetch("/api/post/write", {
-      //     method: "POST",
-      //     body: JSON.stringify({ ...data, author: user!.name }),
-      //   })
-      // ).json();
-      // console.log(result);
+      const result = await (
+        await fetch("/api/post/write", {
+          method: "POST",
+          body: JSON.stringify({ ...data, author: user!.nickname }),
+        })
+      ).json();
+
+      return result;
     } catch (e) {
       console.log(e);
     }
@@ -99,7 +102,9 @@ const Write = () => {
         <form
           className="flex flex-col items-center w-full h-full"
           onSubmit={handleSubmit(async (data) => {
-            // writePost(data);
+            const result = await writePost(data);
+
+            router.push(`/post?id=${result._id}`, "/detail");
           })}
         >
           <input

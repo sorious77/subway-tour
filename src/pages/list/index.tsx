@@ -17,6 +17,7 @@ interface Post {
 const List = () => {
   const router = useRouter();
   const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -24,6 +25,7 @@ const List = () => {
     (async () => {
       const result = await (await fetch(`/api/list/${currentPage}`)).json();
 
+      setLoading(false);
       setPosts([...posts, ...result.posts]);
     })();
   }, [currentPage]);
@@ -32,8 +34,7 @@ const List = () => {
     <div className="flex flex-col items-center justify-center px-4">
       <button
         onClick={() => {
-          //router.push("/write");
-          setCurrentPage((prev) => prev + 1);
+          router.push("/write");
         }}
         className="fixed flex items-center self-end p-4 text-white transition-colors duration-300 ease-in-out rounded-full bg-rose-400 right-10 bottom-10 dark:bg-white dark:text-rose-400 hover:bg-rose-500 dark:hover:text-rose-600"
       >
@@ -52,7 +53,11 @@ const List = () => {
           />
         </svg>
       </button>
-      {posts?.length > 0 ? (
+      {loading ? (
+        <span>Loading...</span>
+      ) : posts.length === 0 ? (
+        <div>게시글 목록이 존재하지 않습니다.</div>
+      ) : (
         <div className="w-full">
           {posts.map((post) => (
             <Post
@@ -63,8 +68,6 @@ const List = () => {
             />
           ))}
         </div>
-      ) : (
-        <span>Loading...</span>
       )}
     </div>
   );
