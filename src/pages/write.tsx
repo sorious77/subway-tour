@@ -104,7 +104,7 @@ const Write = () => {
           onSubmit={handleSubmit(async (data) => {
             const result = await writePost(data);
 
-            router.push(`/post?id=${result._id}`, "/detail");
+            router.push(`/post/${result.id}`);
           })}
         >
           <input

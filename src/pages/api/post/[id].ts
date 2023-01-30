@@ -1,6 +1,5 @@
 import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { noWait } from "recoil";
 import Handler from "../../../libs/Handler";
 
 interface Post {

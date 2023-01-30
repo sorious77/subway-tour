@@ -61,9 +61,9 @@ const List = () => {
         <div className="w-full">
           {posts.map((post) => (
             <Post
-              key={post._id}
+              key={post.id}
               title={post.title}
-              id={post._id}
+              id={post.id}
               content={post.content}
             />
           ))}
