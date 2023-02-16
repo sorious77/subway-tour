@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { useRecoilValue } from "recoil";
+import { userState } from "components/states";
 
 interface User {
   nickname: string;
@@ -30,25 +32,59 @@ const Post = ({
     }월 ${date.getDate()}일`;
   };
 
+  const handleDelete = async () => {
+    if (confirm("정말로 삭제하시겠습니까?")) {
+      await fetch(`/api/post/delete?id=${post.id}`, {
+        method: "DELETE",
+      });
+
+      router.push("/list");
+    }
+  };
+
+  const handleUpdate = () => {
+    router.push(`/post/update/${post.id}`);
+  };
+
+  const currentUser = useRecoilValue(userState);
+
   return (
     <div className="relative flex flex-col px-10 mt-10">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="absolute w-6 h-6 cursor-pointer -top-10"
-        onClick={() => {
-          router.back();
-        }}
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-        />
-      </svg>
+      <div className="flex items-center justify-between mb-6">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="w-6 h-6 cursor-pointer"
+          onClick={() => {
+            router.back();
+          }}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+          />
+        </svg>
+        {currentUser?.nickname === post.user.nickname && (
+          <div className="flex justify-between w-40">
+            <button
+              className="w-16 p-2 text-white rounded bg-rose-400 dark:bg-white dark:text-black hover:bg-rose-500 hover:duration-500 dark:hover:bg-rose-200"
+              onClick={handleDelete}
+            >
+              삭제
+            </button>
+            <button
+              className="w-16 p-2 text-white rounded bg-rose-400 dark:bg-white dark:text-black hover:bg-rose-500 hover:duration-500 dark:hover:bg-rose-200"
+              onClick={handleUpdate}
+            >
+              수정
+            </button>
+          </div>
+        )}
+      </div>
       <div>
         <h1 className="mb-6 text-3xl">{post?.title}</h1>
         <div className="mb-4">
@@ -78,6 +114,7 @@ export default Post;
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.query!.id;
 
+  // TODO URL 수정
   const post: PostInfo = await (
     await fetch(`http://localhost:3000/api/post/${id}`)
   ).json();

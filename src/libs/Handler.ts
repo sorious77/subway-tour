@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-type Method = "GET" | "POST" | "DELETE" | "PUT";
+type Method = "GET" | "POST" | "DELETE" | "PUT" | "PATCH";
 
 export default function Handler(
   method: Method,

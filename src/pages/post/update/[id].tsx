@@ -1,19 +1,32 @@
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useRecoilValue } from "recoil";
 import { userState } from "components/states";
-import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 interface User {
-  email: string;
   nickname: string;
 }
+
 interface Station {
   name: string;
   code: number;
   lat: number;
   lng: number;
   line: string;
+}
+
+interface PostInfo {
+  id: string;
+  title: string;
+  content: string;
+  author: string;
+  createdAt: string;
+  visitedAt: string;
+  station_nm: string;
+  user: User;
 }
 
 interface InputValue {
@@ -25,9 +38,22 @@ interface InputValue {
   thumbnail: any;
 }
 
-const Write = () => {
-  const user: User | null = useRecoilValue(userState);
+const Update = ({
+  post,
+  stations,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
+
+  const [filteredStations, setFilteredStations] = useState<Station[]>([]);
+
+  const getDate = (timestamp: string) => {
+    const date = new Date(timestamp);
+
+    const month =
+      date.getMonth() < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+
+    return `${date.getFullYear()}-${month}-${date.getDate()}`;
+  };
 
   const {
     register,
@@ -36,65 +62,16 @@ const Write = () => {
     reset,
     watch,
     setValue,
-  } = useForm<InputValue>();
+  } = useForm<InputValue>({
+    defaultValues: {
+      title: post.title,
+      station_nm: post.station_nm,
+      visitedAt: getDate(post.visitedAt),
+      content: post.content,
+    },
+  });
 
-  const [stations, setStations] = useState<Station[]>([]);
-  const [filteredStations, setFilteredStations] = useState<Station[]>([]);
-  const [thumbnailUrl, setThumbnailUrl] = useState("");
-
-  const watchStation = watch("station_nm");
-  const watchThumbnail = watch("thumbnail");
-
-  useEffect(() => {
-    (async () => {
-      const result = await (await fetch("/api/stations")).json();
-
-      setStations(result);
-    })();
-  }, []);
-
-  useEffect(() => {
-    (() => {
-      if (watchStation === "") {
-        setFilteredStations([]);
-        return;
-      }
-
-      const filtered = stations.filter((station) => {
-        return station.name.includes(watchStation);
-      });
-
-      if (filtered.length === 1 && filtered[0].name === watchStation) {
-        setFilteredStations([]);
-        return;
-      }
-
-      setFilteredStations(filtered);
-    })();
-  }, [watchStation]);
-
-  useEffect(() => {
-    if (watchThumbnail && watchThumbnail.length > 0) {
-      const file = watchThumbnail[0];
-
-      setThumbnailUrl(URL.createObjectURL(file));
-    }
-  }, [watchThumbnail]);
-
-  const writePost = async (data: InputValue) => {
-    try {
-      const result = await (
-        await fetch("/api/post/write", {
-          method: "POST",
-          body: JSON.stringify({ ...data, author: user!.email }),
-        })
-      ).json();
-
-      return result;
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  const currentUser = useRecoilValue(userState);
 
   return (
     <div className="flex flex-col items-center h-full dark:bg-inherit">
@@ -102,9 +79,12 @@ const Write = () => {
         <form
           className="flex flex-col items-center w-full h-full"
           onSubmit={handleSubmit(async (data) => {
-            const result = await writePost(data);
+            await fetch(`/api/post/update?id=${post.id}`, {
+              method: "PATCH",
+              body: JSON.stringify({ ...data }),
+            });
 
-            router.push(`/post/${result.id}`);
+            router.push(`/post/${post.id}`);
           })}
         >
           <input
@@ -150,7 +130,7 @@ const Write = () => {
                     required: "지하철 역 이름을 입력하세요.",
                     validate: {
                       isExist: (name) =>
-                        stations.filter((station) => {
+                        stations.filter((station: Station) => {
                           return station.name === name;
                         }).length > 0 || "존재하지 않는 역입니다",
                     },
@@ -232,23 +212,13 @@ const Write = () => {
           </div>
           <textarea
             placeholder="내용"
-            className="z-0 w-full p-2 border-2 border-gray-200 rounded focus:outline-rose-400 bg-inherit"
+            className="z-0 w-full p-2 mb-4 border-2 border-gray-200 rounded focus:outline-rose-400 bg-inherit"
             rows={15}
             {...register("content")}
           />
           <input
-            type="file"
-            className="h-16 mt-2 text-center"
-            {...register("thumbnail")}
-            accept="image/*"
-          />
-          <img
-            src={thumbnailUrl}
-            className={`mt-0 mb-10 ${thumbnailUrl ? "h-80" : ""}`}
-          />
-          <input
             type="submit"
-            value="Submit"
+            value="Update"
             className="px-4 py-2 text-white rounded cursor-pointer bg-rose-400 dark:bg-white dark:text-black"
           />
         </form>
@@ -257,4 +227,21 @@ const Write = () => {
   );
 };
 
-export default Write;
+export default Update;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const id = context.query!.id;
+
+  // TODO URL 수정
+  const post: PostInfo = await (
+    await fetch(`http://localhost:3000/api/post/${id}`)
+  ).json();
+
+  const stations: Station[] = await (
+    await fetch(`http://localhost:3000/api/stations`)
+  ).json();
+
+  return {
+    props: { post, stations },
+  };
+};

@@ -4,27 +4,26 @@ import Handler from "../../../libs/Handler";
 
 interface Post {
   title: string;
-  createdAt: string;
   station_nm: string;
   visitedAt: string;
   content: string;
-  author: string;
-  _id: string;
   id: string;
 }
 
-const PostHandler = async (req: NextApiRequest, res: NextApiResponse<Post>) => {
+const UpdateHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const {
     query: { id },
   } = req;
 
+  const post: Post = JSON.parse(req.body);
+
   const { data } = await axios({
     url: `${process.env.BASE_URL}/posts/${id}`,
-    data: id,
-    method: "get",
+    data: { ...post },
+    method: "patch",
   });
 
   return res.status(200).json(data);
 };
 
-export default Handler("GET", PostHandler);
+export default Handler("PATCH", UpdateHandler);
