@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 type InputValue = {
   email: string;
-  nickname: string;
   password: string;
   passwordConfirm: string;
 };
@@ -13,17 +13,47 @@ const Signup = () => {
   const [error, setError] = useState("");
   const [toggleToolTip, setToggleToolTip] = useState(false);
 
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
     formState: { isSubmitting, errors },
+    watch,
   } = useForm<InputValue>();
+
+  const watchPassword = watch("password");
+
+  const signup = async (data: InputValue) => {
+    try {
+      const { error } = await (
+        await fetch("/api/users/signup", {
+          method: "POST",
+          body: JSON.stringify(data),
+        })
+      ).json();
+
+      console.log(error);
+
+      if (error) {
+        alert("회원 가입에 실패했습니다.");
+        return;
+      }
+
+      alert("회원 가입에 성공했습니다.");
+      router.push("/login");
+    } catch (e) {
+      alert("회원 가입에 실패했습니다.");
+    }
+  };
 
   return (
     <div className="flex items-center justify-center h-full flex-col">
       <form
         className="flex flex-col w-1/3"
-        onSubmit={handleSubmit(async (data) => {})}
+        onSubmit={handleSubmit(async (data) => {
+          await signup(data);
+        })}
       >
         <label>이메일</label>
         <input
@@ -142,6 +172,10 @@ const Signup = () => {
           maxLength={15}
           {...register("passwordConfirm", {
             required: "비밀번호 확인을 입력하세요.",
+            validate: {
+              isMatchPassword: (confirm) =>
+                confirm === watchPassword || "비밀번호가 일치하지 않습니다.",
+            },
           })}
         />
         {errors.passwordConfirm && (
