@@ -27,7 +27,7 @@ const Login = () => {
       setLoading(true);
 
       const result = await (
-        await fetch("/api/login", {
+        await fetch("/api/users/login", {
           method: "POST",
           body: JSON.stringify(data),
         })
