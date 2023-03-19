@@ -30,6 +30,13 @@ const List = () => {
     })();
   }, [currentPage]);
 
+  const getNextPage = async () => {
+    // 현재 페이지 +1
+    setCurrentPage((prev) => prev + 1);
+
+    // 페이지 번호에 따라 요청
+  };
+
   return (
     <div className="flex flex-col items-center justify-center px-4">
       <button
@@ -58,15 +65,25 @@ const List = () => {
       ) : posts.length === 0 ? (
         <div>게시글 목록이 존재하지 않습니다.</div>
       ) : (
-        <div className="w-full">
-          {posts.map((post) => (
-            <Post
-              key={post.id}
-              title={post.title}
-              id={post.id}
-              content={post.content}
-            />
-          ))}
+        <div className="w-full items-center flex flex-col">
+          <div className="w-full flex justify-center">
+            <div className="w-1/2 flex flex-col justify-center">
+              {posts.map((post) => (
+                <Post
+                  key={post.id}
+                  title={post.title}
+                  id={post.id}
+                  content={post.content}
+                />
+              ))}
+            </div>
+          </div>
+          <button
+            onClick={getNextPage}
+            className="mb-10 px-4 py-2 text-white rounded bg-rose-400 dark:bg-white dark:text-black hover:bg-rose-500 hover:transition-colors hover:duration-500 dark:hover:bg-rose-200"
+          >
+            더 보기...
+          </button>
         </div>
       )}
     </div>

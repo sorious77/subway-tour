@@ -11,7 +11,7 @@ const Post = ({ title, content, thumbnail, id }: PostProps) => {
   return (
     <Link href={{ pathname: `/post/${id}` }}>
       <div className="flex w-full mb-10">
-        <div className="w-1/6 h-40 rounded-lg shadow bg-red-50" />
+        {/* <div className="w-1/5 h-40 rounded-lg shadow bg-red-50" /> */}
         <div className="flex flex-col justify-center w-5/6 pl-4">
           <div className="text-2xl">{title}</div>
           <div>
