@@ -1,10 +1,9 @@
-import { useRecoilValue } from "recoil";
-import { userState } from "components/states";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 const MyPage = () => {
-  const user = useRecoilValue(userState);
   const router = useRouter();
+  const { data: session } = useSession();
 
   return (
     <div className="flex flex-col items-center h-full">
@@ -24,7 +23,7 @@ const MyPage = () => {
               />
             </svg>
           </div>
-          {user?.nickname}
+          {session?.user?.nickname}
         </div>
         <div className="flex flex-col">
           <div

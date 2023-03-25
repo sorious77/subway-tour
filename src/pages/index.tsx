@@ -1,17 +1,14 @@
-import { useRecoilValue } from "recoil";
-import { userState } from "components/states";
-
-interface User {
-  nickname: string;
-}
+import { useSession } from "next-auth/react";
 
 const Home = () => {
-  const user = useRecoilValue<User | null>(userState);
+  const { data: session } = useSession();
 
   return (
     <div className="flex flex-col items-center justify-center h-full">
       <h1 className="mb-4 text-9xl">🚇</h1>
-      {user && <div className="text-2xl">안녕, {user.nickname}!</div>}
+      {session?.user && (
+        <div className="text-2xl">안녕, {session?.user?.nickname}!</div>
+      )}
     </div>
   );
 };

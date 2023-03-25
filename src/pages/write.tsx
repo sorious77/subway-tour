@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useRecoilValue } from "recoil";
-import { userState } from "components/states";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 interface User {
   email: string;
@@ -26,7 +25,7 @@ interface InputValue {
 }
 
 const Write = () => {
-  const user: User | null = useRecoilValue(userState);
+  const { data: session } = useSession();
   const router = useRouter();
 
   const {
@@ -86,7 +85,7 @@ const Write = () => {
       const result = await (
         await fetch("/api/post/write", {
           method: "POST",
-          body: JSON.stringify({ ...data, author: user!.email }),
+          body: JSON.stringify({ ...data, author: session?.user.email }),
         })
       ).json();
 

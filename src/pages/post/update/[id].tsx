@@ -1,8 +1,5 @@
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { useRecoilValue } from "recoil";
-import { userState } from "components/states";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 
@@ -60,7 +57,6 @@ const Update = ({
     handleSubmit,
     formState: { isSubmitting, errors },
     reset,
-    watch,
     setValue,
   } = useForm<InputValue>({
     defaultValues: {
@@ -70,8 +66,6 @@ const Update = ({
       content: post.content,
     },
   });
-
-  const currentUser = useRecoilValue(userState);
 
   return (
     <div className="flex flex-col items-center h-full dark:bg-inherit">

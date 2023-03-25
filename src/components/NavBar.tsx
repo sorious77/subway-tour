@@ -1,12 +1,10 @@
 import Link from "next/link";
-import { userState } from "./states";
-import { useRecoilState } from "recoil";
 import { useTheme } from "next-themes";
 import { signOut, useSession } from "next-auth/react";
 
 const NavBar = () => {
   const { theme, setTheme } = useTheme();
-  const { status, data } = useSession();
+  const { status } = useSession();
 
   return (
     <div className="flex items-center justify-between px-6 py-5 mb-10 bg-rose-200 dark:bg-zinc-800">

@@ -1,5 +1,3 @@
-import { useRecoilValue } from "recoil";
-import { userState } from "components/states";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -21,19 +19,10 @@ interface Station {
 }
 
 const Gacha = () => {
-  const user = useRecoilValue(userState);
   const router = useRouter();
   const [stations, setStations] = useState<Station[]>();
   const [station, setStation] = useState<Station>();
   const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    (() => {
-      // if (!user) {
-      //   router.push("/");
-      // }
-    })();
-  }, [user]);
 
   useEffect(() => {
     (async () => {

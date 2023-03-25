@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { useRecoilValue } from "recoil";
-import { userState } from "components/states";
+import { useSession } from "next-auth/react";
 
 interface User {
   nickname: string;
@@ -23,6 +22,7 @@ const Post = ({
   post,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
+  const { data: session } = useSession();
 
   const getDate = (timestamp: string) => {
     const date = new Date(timestamp);
@@ -46,8 +46,6 @@ const Post = ({
     router.push(`/post/update/${post.id}`);
   };
 
-  const currentUser = useRecoilValue(userState);
-
   return (
     <div className="relative flex flex-col px-10 mt-10">
       <div className="flex items-center justify-between mb-6">
@@ -68,7 +66,7 @@ const Post = ({
             d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
           />
         </svg>
-        {currentUser?.nickname === post.user.nickname && (
+        {session?.user?.nickname === post.user.nickname && (
           <div className="flex justify-between w-40">
             <button
               className="w-16 p-2 text-white rounded bg-rose-400 dark:bg-white dark:text-black hover:bg-rose-500 hover:duration-500 dark:hover:bg-rose-200"

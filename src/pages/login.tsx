@@ -1,7 +1,5 @@
-import { userState } from "components/states";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
 import { useState } from "react";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
@@ -12,7 +10,6 @@ type InputValue = {
 };
 
 const Login = () => {
-  const [user, setUser] = useRecoilState(userState);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -40,7 +37,7 @@ const Login = () => {
 
       router.push("/");
     } catch (e) {
-      console.log("error : ", e);
+      setError("로그인에 실패했습니다. 이메일 또는 비밀번호를 확인해주세요.");
     } finally {
       setLoading(false);
     }
