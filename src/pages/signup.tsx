@@ -26,21 +26,18 @@ const Signup = () => {
 
   const signup = async (data: InputValue) => {
     try {
-      const { error } = await (
+      const { error, message } = await (
         await fetch("/api/users/signup", {
           method: "POST",
           body: JSON.stringify(data),
         })
       ).json();
 
-      console.log(error);
-
       if (error) {
-        alert("회원 가입에 실패했습니다.");
+        alert(message);
         return;
       }
 
-      alert("회원 가입에 성공했습니다.");
       router.push("/login");
     } catch (e) {
       alert("회원 가입에 실패했습니다.");

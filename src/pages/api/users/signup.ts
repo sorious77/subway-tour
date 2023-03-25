@@ -8,19 +8,20 @@ type UserData = {
 };
 
 type Error = {
-  error: string;
+  error: boolean;
+  message: string;
 };
 
 const SignupHandler = async (
   req: NextApiRequest,
-  res: NextApiResponse<Error>
+  res: NextApiResponse<Error | null>
 ) => {
   const { email, password } = JSON.parse(req.body);
 
-  console.log(email, password);
-
   try {
-    const result = await axios({
+    const {
+      data: { error, message },
+    } = await axios({
       url: `${process.env.BASE_URL}/users/register`,
       data: {
         email,
@@ -29,19 +30,16 @@ const SignupHandler = async (
       method: "POST",
     });
 
-    console.log(result);
-
-    const success = result.data;
-
-    console.log(result);
-
-    if (success) {
-      return res.status(200);
+    if (!error) {
+      return res.status(200).json(error);
     }
 
-    return res.status(404).json({ error: "회원가입에 실패했습니다." });
+    return res.status(404).json({ error, message });
   } catch (e) {
-    return res.status(404).json({ error: "회원가입에 실패했습니다." });
+    console.log(e);
+    return res
+      .status(404)
+      .json({ error: true, message: "회원 가입에 실패했습니다." });
   }
 };
 
