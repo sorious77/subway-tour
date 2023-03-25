@@ -30,9 +30,15 @@ const Login = () => {
       const result = await signIn("credentials", {
         email: data.email,
         password: data.password,
-        callbackUrl: "/",
         redirect: false,
       });
+
+      if (result?.error) {
+        setError("로그인에 실패했습니다. 이메일 또는 비밀번호를 확인해주세요.");
+        return;
+      }
+
+      router.push("/");
     } catch (e) {
       console.log("error : ", e);
     } finally {
