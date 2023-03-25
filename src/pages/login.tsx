@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import { useState } from "react";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 type InputValue = {
   email: string;
@@ -26,28 +27,14 @@ const Login = () => {
     try {
       setLoading(true);
 
-      const result = await (
-        await fetch("/api/users/login", {
-          method: "POST",
-          body: JSON.stringify(data),
-        })
-      ).json();
-
-      if (result.error) {
-        setError(result.error);
-      } else {
-        setUser(result);
-
-        // TODO session으로 변경
-        localStorage.setItem(
-          "user",
-          JSON.stringify({ email: result.email, nickname: result.nickname })
-        );
-
-        router.push("/");
-      }
+      const result = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        callbackUrl: "/",
+        redirect: false,
+      });
     } catch (e) {
-      console.log(e);
+      console.log("error : ", e);
     } finally {
       setLoading(false);
     }

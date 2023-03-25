@@ -2,10 +2,11 @@ import Link from "next/link";
 import { userState } from "./states";
 import { useRecoilState } from "recoil";
 import { useTheme } from "next-themes";
+import { signOut, useSession } from "next-auth/react";
 
 const NavBar = () => {
   const { theme, setTheme } = useTheme();
-  const [user, setUser] = useRecoilState(userState);
+  const { status, data } = useSession();
 
   return (
     <div className="flex items-center justify-between px-6 py-5 mb-10 bg-rose-200 dark:bg-zinc-800">
@@ -14,7 +15,11 @@ const NavBar = () => {
           🚇 Subway Tour
         </Link>
       </div>
-      <div className={`flex justify-between ${user ? "w-1/3" : "w-1/6"}`}>
+      <div
+        className={`flex justify-between ${
+          status === "authenticated" ? "w-1/3" : "w-1/6"
+        }`}
+      >
         <button
           className="cursor-pointer"
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -44,13 +49,10 @@ const NavBar = () => {
           )}
         </button>
         <div className="px-4 text-white transition-colors ease-in-out cursor-pointer bg-rose-400 dark:text-black dark:bg-white rounded-xl hover:bg-rose-500 dark:hover:bg-gray-200">
-          {user ? (
+          {status === "authenticated" ? (
             <span
               onClick={() => {
-                setUser(null);
-
-                // TODO session으로 변경
-                localStorage.removeItem("user");
+                signOut();
               }}
             >
               로그아웃
@@ -59,7 +61,7 @@ const NavBar = () => {
             <Link href="/login">로그인</Link>
           )}
         </div>
-        {user && (
+        {status === "authenticated" && (
           <>
             <Link
               href="/gacha"

@@ -15,7 +15,8 @@
     "jsx": "preserve",
     "incremental": true,
     "baseUrl": "./src",
-    "types": ["kakao.maps.d.ts"]
+    "types": ["kakao.maps.d.ts"],
+    "typeRoots": ["@types/next-auth.d.ts"]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
