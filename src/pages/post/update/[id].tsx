@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import AuthCheck from "libs/AuthCheck";
 
 interface User {
   nickname: string;
@@ -40,6 +41,8 @@ const Update = ({
   stations,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
+
+  AuthCheck();
 
   const [filteredStations, setFilteredStations] = useState<Station[]>([]);
 
