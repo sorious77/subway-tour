@@ -38,6 +38,7 @@ const Signup = () => {
         return;
       }
 
+      alert("회원 가입에 성공했습니다!");
       router.push("/login");
     } catch (e) {
       alert("회원 가입에 실패했습니다.");
@@ -45,7 +46,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-full flex-col">
+    <div className="flex flex-col items-center justify-center h-full">
       <form
         className="flex flex-col w-1/3"
         onSubmit={handleSubmit(async (data) => {
@@ -109,7 +110,7 @@ const Signup = () => {
               />
             </svg>
             {toggleToolTip && (
-              <div className="absolute text-xs top-0 left-8 bg-white dark:text-white dark:bg-zinc-800 border border-gray-100 rounded w-80 h-auto p-2">
+              <div className="absolute top-0 h-auto p-2 text-xs bg-white border border-gray-100 rounded left-8 dark:text-white dark:bg-zinc-800 w-80">
                 비밀번호는 8자 이상 15자 이하로 설정해주세요.
                 <br />
                 영문자, 특수문자, 숫자를 각각 한 글자 이상 입력해주세요.
@@ -198,7 +199,7 @@ const Signup = () => {
         <input
           type="submit"
           value="회원가입하기"
-          className="mt-10 px-4 py-2 text-white cursor-pointer rounded-3xl bg-rose-400 disabled:cursor-default disabled:bg-rose-200 dark:disabled:bg-rose-400"
+          className="px-4 py-2 mt-10 text-white cursor-pointer rounded-3xl bg-rose-400 disabled:cursor-default disabled:bg-rose-200 dark:disabled:bg-rose-400"
           disabled={isSubmitting || loading}
         />
         {error && (
