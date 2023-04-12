@@ -30,13 +30,9 @@ const SignupHandler = async (
       method: "POST",
     });
 
-    if (!error) {
-      return res.status(200).json(error);
-    }
-
-    return res.status(404).json({ error, message });
+    return res.status(200).json({ error, message });
   } catch (e) {
-    console.log(e);
+    console.log("error : ", e);
     return res
       .status(404)
       .json({ error: true, message: "회원 가입에 실패했습니다." });
