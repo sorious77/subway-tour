@@ -1,4 +1,5 @@
 import Post from "components/Post";
+import AuthCheck from "libs/AuthCheck";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -20,6 +21,8 @@ const List = () => {
   const [loading, setLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(1);
+
+  AuthCheck();
 
   useEffect(() => {
     (async () => {

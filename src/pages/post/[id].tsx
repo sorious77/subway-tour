@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useSession } from "next-auth/react";
+import AuthCheck from "libs/AuthCheck";
 
 interface User {
   nickname: string;
@@ -23,6 +24,8 @@ const Post = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
   const { data: session } = useSession();
+
+  AuthCheck();
 
   const getDate = (timestamp: string) => {
     const date = new Date(timestamp);

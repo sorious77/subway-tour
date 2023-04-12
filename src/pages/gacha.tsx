@@ -9,6 +9,7 @@ import {
   CustomOverlayMap,
   MapInfoWindow,
 } from "react-kakao-maps-sdk";
+import AuthCheck from "libs/AuthCheck";
 
 interface Station {
   name: string;
@@ -19,10 +20,11 @@ interface Station {
 }
 
 const Gacha = () => {
-  const router = useRouter();
   const [stations, setStations] = useState<Station[]>();
   const [station, setStation] = useState<Station>();
   const [isOpen, setIsOpen] = useState(false);
+
+  AuthCheck();
 
   useEffect(() => {
     (async () => {

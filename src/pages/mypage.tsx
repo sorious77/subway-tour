@@ -1,9 +1,12 @@
+import AuthCheck from "libs/AuthCheck";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 const MyPage = () => {
   const router = useRouter();
   const { data: session } = useSession();
+
+  AuthCheck();
 
   return (
     <div className="flex flex-col items-center h-full">
