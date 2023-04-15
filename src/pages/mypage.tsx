@@ -14,7 +14,7 @@ const MyPage = () => {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
-              className="w-10 h-10 text-rose-400"
+              className="w-10 h-10 text-rose-400 dark:text-white"
             >
               <path
                 fillRule="evenodd"
