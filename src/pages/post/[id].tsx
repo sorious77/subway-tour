@@ -66,7 +66,7 @@ const Post = ({
             d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
           />
         </svg>
-        {session?.user?.nickname === post.user.nickname && (
+        {session?.user?.user?.nickname === post.user.nickname && (
           <div className="flex justify-between w-40">
             <button
               className="w-16 p-2 text-white rounded bg-rose-400 dark:bg-white dark:text-black hover:bg-rose-500 hover:duration-500 dark:hover:bg-rose-200"

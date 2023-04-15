@@ -23,7 +23,7 @@ const MyPage = () => {
               />
             </svg>
           </div>
-          {session?.user?.nickname}
+          {session?.user?.user?.nickname}
         </div>
         <div className="flex flex-col">
           <div
