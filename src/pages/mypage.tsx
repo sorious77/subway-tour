@@ -1,4 +1,3 @@
-import AuthCheck from "libs/AuthCheck";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
@@ -6,12 +5,10 @@ const MyPage = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
-  AuthCheck();
-
   return (
     <div className="flex flex-col items-center h-full">
       <div className="flex flex-col items-center">
-        <div className="text-2xl flex items-center mb-10">
+        <div className="flex items-center mb-10 text-2xl">
           <div className="mr-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"

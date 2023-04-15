@@ -9,7 +9,6 @@ import {
   CustomOverlayMap,
   MapInfoWindow,
 } from "react-kakao-maps-sdk";
-import AuthCheck from "libs/AuthCheck";
 
 interface Station {
   name: string;
@@ -23,8 +22,6 @@ const Gacha = () => {
   const [stations, setStations] = useState<Station[]>();
   const [station, setStation] = useState<Station>();
   const [isOpen, setIsOpen] = useState(false);
-
-  AuthCheck();
 
   useEffect(() => {
     (async () => {
@@ -50,7 +47,7 @@ const Gacha = () => {
         <title>Subway Tour | 뽑기</title>
       </Head>
       {station && (
-        <div className="flex flex-col items-center w-full mb-10 justify-center text-center h-2/3">
+        <div className="flex flex-col items-center justify-center w-full mb-10 text-center h-2/3">
           <div className="text-4xl">{station?.name}</div>
           <div className="text-xl text-gray-500">{station?.line}</div>
           <Map

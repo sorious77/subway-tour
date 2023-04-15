@@ -1,5 +1,4 @@
 import Post from "components/Post";
-import AuthCheck from "libs/AuthCheck";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -21,8 +20,6 @@ const List = () => {
   const [loading, setLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(1);
-
-  AuthCheck();
 
   useEffect(() => {
     (async () => {
@@ -68,9 +65,9 @@ const List = () => {
       ) : posts.length === 0 ? (
         <div>게시글 목록이 존재하지 않습니다.</div>
       ) : (
-        <div className="w-full items-center flex flex-col">
-          <div className="w-full flex justify-center">
-            <div className="w-1/2 flex flex-col justify-center">
+        <div className="flex flex-col items-center w-full">
+          <div className="flex justify-center w-full">
+            <div className="flex flex-col justify-center w-1/2">
               {posts.map((post) => (
                 <Post
                   key={post.id}
@@ -83,7 +80,7 @@ const List = () => {
           </div>
           <button
             onClick={getNextPage}
-            className="mb-10 px-4 py-2 text-white rounded bg-rose-400 dark:bg-white dark:text-black hover:bg-rose-500 hover:transition-colors hover:duration-500 dark:hover:bg-rose-200"
+            className="px-4 py-2 mb-10 text-white rounded bg-rose-400 dark:bg-white dark:text-black hover:bg-rose-500 hover:transition-colors hover:duration-500 dark:hover:bg-rose-200"
           >
             더 보기...
           </button>
