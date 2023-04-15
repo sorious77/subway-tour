@@ -5,6 +5,22 @@ import { RecoilRoot } from "recoil";
 import { ThemeProvider } from "next-themes";
 import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+
+const AuthCheck = ({ children }: any) => {
+  const { data: session, status } = useSession();
+  const isUser = !!session?.user;
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "loading") return;
+    if (!isUser) router.push("/login");
+  }, [router.isReady, status, isUser]);
+
+  return children;
+};
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
@@ -15,7 +31,9 @@ const App = ({ Component, pageProps }: AppProps) => {
             <Head>
               <title>Subway Tour</title>
             </Head>
-            <Component {...pageProps} />
+            <AuthCheck>
+              <Component {...pageProps} />
+            </AuthCheck>
           </Layout>
         </SessionProvider>
       </ThemeProvider>

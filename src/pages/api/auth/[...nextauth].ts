@@ -12,12 +12,12 @@ export default NextAuth({
   providers: [
     CredentialsProvider({
       type: "credentials",
-      credentials: {},
+      credentials: {
+        email: {},
+        password: {},
+      },
       async authorize(credentials, _) {
-        const { email, password } = credentials as {
-          email: string;
-          password: string;
-        };
+        const { email, password } = credentials!;
 
         const result = await axios({
           url: `${process.env.BASE_URL}/users/login`,
@@ -32,7 +32,9 @@ export default NextAuth({
 
         if (matchedUser && matchedUser.email) {
           const { email, nickname } = matchedUser as UserData;
-          return { user: { email, nickname } };
+
+          console.log({ email, nickname });
+          return { user: { email, nickname } } as any;
         }
 
         throw new Error("이메일 주소 또는 비밀번호를 확인해주세요.");
@@ -42,5 +44,28 @@ export default NextAuth({
   pages: {
     signIn: "/login",
   },
-  secret: process.env.SECRET,
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60,
+  },
+  jwt: {
+    secret: process.env.SECRET,
+  },
+  callbacks: {
+    async jwt({ token, user, account }) {
+      if (user) {
+        console.log(user);
+        token.user = user;
+      }
+
+      return token;
+    },
+    async session({ session, token }) {
+      if (token.user) {
+        session.user = token?.user as any;
+      }
+
+      return session;
+    },
+  },
 });

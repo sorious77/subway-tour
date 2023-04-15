@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import AuthCheck from "libs/AuthCheck";
 
 interface User {
   email: string;
@@ -44,8 +43,6 @@ const Write = () => {
 
   const watchStation = watch("station_nm");
   const watchThumbnail = watch("thumbnail");
-
-  AuthCheck();
 
   useEffect(() => {
     (async () => {

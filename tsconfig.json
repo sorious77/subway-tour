@@ -17,6 +17,6 @@
     "baseUrl": "./src",
     "types": ["kakao.maps.d.ts"]
   },
-  "include": ["next-env.d.ts", "next-auth.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "@types/**/*.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
