@@ -7,6 +7,7 @@ interface Post {
   id: string;
   content: string;
   thumbnail?: string;
+  author: string;
 }
 
 const ListHandler = async (

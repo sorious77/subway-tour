@@ -2,13 +2,16 @@ import Post from "components/Post";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+interface User {
+  nickname: string;
+}
 interface Post {
   title: string;
   _id: string;
   content: string;
   thumbnail?: string;
   station_nm: string;
-  author: string;
+  user: User;
   visitedAt: string;
   createdAt: string;
   id: string;
@@ -35,8 +38,6 @@ const List = () => {
     let size = posts.length;
 
     setLastPostId(+posts[size - 1].id);
-
-    // 페이지 번호에 따라 요청
   };
 
   return (
@@ -76,6 +77,8 @@ const List = () => {
                   title={post.title}
                   id={post.id}
                   content={post.content}
+                  author={post.user.nickname}
+                  createdAt={post.createdAt}
                 />
               ))}
             </div>
