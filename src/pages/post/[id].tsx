@@ -47,61 +47,63 @@ const Post = ({
   };
 
   return (
-    <div className="relative flex flex-col px-10 mt-10">
-      <div className="flex items-center justify-between mb-6">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="w-6 h-6 cursor-pointer"
-          onClick={() => {
-            router.push("/list");
-          }}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-          />
-        </svg>
-        {session?.user?.user?.nickname === post.user.nickname && (
-          <div className="flex justify-between w-40">
-            <button
-              className="w-16 p-2 text-white rounded bg-rose-400 dark:bg-white dark:text-black hover:bg-rose-500 hover:duration-500 dark:hover:bg-rose-200"
-              onClick={handleDelete}
-            >
-              삭제
-            </button>
-            <button
-              className="w-16 p-2 text-white rounded bg-rose-400 dark:bg-white dark:text-black hover:bg-rose-500 hover:duration-500 dark:hover:bg-rose-200"
-              onClick={handleUpdate}
-            >
-              수정
-            </button>
-          </div>
-        )}
-      </div>
-      <div>
-        <h1 className="mb-6 text-3xl">{post?.title}</h1>
-        <div className="mb-4">
-          <Link
-            href={`https://map.naver.com/v5/search/${post?.station_nm}역`}
-            target="_blank"
-            className="p-2 text-white rounded bg-rose-400 dark:bg-white dark:text-black"
+    <div className="relative flex flex-col items-center px-10 py-10 mt-10 whitespace-pre-line dark:bg-zinc-700">
+      <div className="w-1/2">
+        <div className="flex items-center justify-between mb-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6 cursor-pointer"
+            onClick={() => {
+              router.push("/list");
+            }}
           >
-            #{post?.station_nm}
-          </Link>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+            />
+          </svg>
+          {session?.user?.user?.nickname === post.user.nickname && (
+            <div className="flex justify-between w-40">
+              <button
+                className="w-16 p-2 text-white rounded bg-rose-400 dark:bg-white dark:text-black hover:bg-rose-500 hover:duration-500 dark:hover:bg-rose-200"
+                onClick={handleDelete}
+              >
+                삭제
+              </button>
+              <button
+                className="w-16 p-2 text-white rounded bg-rose-400 dark:bg-white dark:text-black hover:bg-rose-500 hover:duration-500 dark:hover:bg-rose-200"
+                onClick={handleUpdate}
+              >
+                수정
+              </button>
+            </div>
+          )}
         </div>
-        <div className="mb-10">
-          <span className="font-semibold">{post?.user.nickname!}</span>
-          <span className="ml-2 text-xs text-gray-600 dark:text-gray-300">
-            방문일 - {getDate(post?.visitedAt!)} / 작성일 -{" "}
-            {getDate(post?.createdAt!)}
-          </span>
+        <div>
+          <h1 className="mb-6 text-3xl">{post?.title}</h1>
+          <div className="mb-4">
+            <Link
+              href={`https://map.naver.com/v5/search/${post?.station_nm}역`}
+              target="_blank"
+              className="p-2 text-white rounded bg-rose-400 dark:bg-white dark:text-black"
+            >
+              #{post?.station_nm}
+            </Link>
+          </div>
+          <div className="mb-10">
+            <span className="font-semibold">{post?.user.nickname!}</span>
+            <span className="ml-2 text-xs text-gray-600 dark:text-gray-300">
+              방문일 - {getDate(post?.visitedAt!)} / 작성일 -{" "}
+              {getDate(post?.createdAt!)}
+            </span>
+          </div>
+          <div>{post?.content}</div>
         </div>
-        <div>{post?.content}</div>
       </div>
     </div>
   );

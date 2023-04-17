@@ -40,7 +40,7 @@ const List = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center px-4 overflow-y-auto">
+    <div className="flex flex-col items-center justify-center px-4 overflow-y-auto dark:bg-zinc-700">
       <button
         onClick={() => {
           router.push("/write");
