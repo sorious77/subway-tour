@@ -14,10 +14,12 @@ const ListHandler = async (
   res: NextApiResponse<Post[]>
 ) => {
   const {
-    query: { page },
+    query: { lastPostId },
   } = req;
 
-  const { data } = await axios.get(`${process.env.BASE_URL}/lists/${page}`);
+  const { data } = await axios.get(
+    `${process.env.BASE_URL}/lists/${lastPostId}`
+  );
 
   return res.status(200).json(data);
 };

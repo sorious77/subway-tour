@@ -19,26 +19,28 @@ const List = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const [lastPostId, setLastPostId] = useState(0);
 
   useEffect(() => {
     (async () => {
-      const result = await (await fetch(`/api/list/${currentPage}`)).json();
+      const result = await (await fetch(`/api/list/${lastPostId}`)).json();
 
       setLoading(false);
       setPosts([...posts, ...result.posts]);
     })();
-  }, [currentPage]);
+  }, [lastPostId]);
 
   const getNextPage = async () => {
     // 현재 페이지 +1
-    setCurrentPage((prev) => prev + 1);
+    let size = posts.length;
+
+    setLastPostId(+posts[size - 1].id);
 
     // 페이지 번호에 따라 요청
   };
 
   return (
-    <div className="flex flex-col items-center justify-center px-4">
+    <div className="flex flex-col items-center justify-center px-4 overflow-y-auto">
       <button
         onClick={() => {
           router.push("/write");
