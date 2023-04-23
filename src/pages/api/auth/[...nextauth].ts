@@ -33,7 +33,6 @@ export default NextAuth({
         if (matchedUser && matchedUser.email) {
           const { email, nickname } = matchedUser as UserData;
 
-          console.log({ email, nickname });
           return { user: { email, nickname } } as any;
         }
 
@@ -54,7 +53,6 @@ export default NextAuth({
   callbacks: {
     async jwt({ token, user, account }) {
       if (user) {
-        console.log(user);
         token.user = user;
       }
 

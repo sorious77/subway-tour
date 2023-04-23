@@ -16,7 +16,7 @@ const AuthCheck = ({ children }: any) => {
 
   useEffect(() => {
     if (status === "loading") return;
-    if (!isUser) router.push("/login");
+    if (!isUser && router.pathname !== "/") router.push("/login");
   }, [router.isReady, status, isUser]);
 
   return children;

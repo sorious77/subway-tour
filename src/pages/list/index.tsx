@@ -2,13 +2,16 @@ import Post from "components/Post";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+interface User {
+  nickname: string;
+}
 interface Post {
   title: string;
   _id: string;
   content: string;
   thumbnail?: string;
   station_nm: string;
-  author: string;
+  user: User;
   visitedAt: string;
   createdAt: string;
   id: string;
@@ -19,26 +22,26 @@ const List = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const [lastPostId, setLastPostId] = useState(Number.MAX_VALUE);
 
   useEffect(() => {
     (async () => {
-      const result = await (await fetch(`/api/list/${currentPage}`)).json();
+      const result = await (await fetch(`/api/list/${lastPostId}`)).json();
 
       setLoading(false);
       setPosts([...posts, ...result.posts]);
     })();
-  }, [currentPage]);
+  }, [lastPostId]);
 
   const getNextPage = async () => {
     // 현재 페이지 +1
-    setCurrentPage((prev) => prev + 1);
+    let size = posts.length;
 
-    // 페이지 번호에 따라 요청
+    setLastPostId(+posts[size - 1].id);
   };
 
   return (
-    <div className="flex flex-col items-center justify-center px-4">
+    <div className="flex flex-col items-center justify-center px-4 overflow-y-auto dark:bg-zinc-700">
       <button
         onClick={() => {
           router.push("/write");
@@ -74,6 +77,8 @@ const List = () => {
                   title={post.title}
                   id={post.id}
                   content={post.content}
+                  author={post.user.nickname}
+                  createdAt={post.createdAt}
                 />
               ))}
             </div>
