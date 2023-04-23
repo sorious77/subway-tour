@@ -22,7 +22,7 @@ const List = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const [lastPostId, setLastPostId] = useState(0);
+  const [lastPostId, setLastPostId] = useState(Number.MAX_VALUE);
 
   useEffect(() => {
     (async () => {
