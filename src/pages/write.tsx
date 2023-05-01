@@ -235,7 +235,7 @@ const Write = () => {
             rows={15}
             {...register("content")}
           />
-          <input
+          {/* <input
             type="file"
             className="h-16 mt-2 text-center"
             {...register("thumbnail")}
@@ -244,7 +244,7 @@ const Write = () => {
           <img
             src={thumbnailUrl}
             className={`mt-0 mb-10 ${thumbnailUrl ? "h-80" : ""}`}
-          />
+          /> */}
           <input
             type="submit"
             value="Submit"
