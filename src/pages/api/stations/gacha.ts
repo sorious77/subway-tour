@@ -1,14 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Handler from "../../../libs/Handler";
 import axios from "axios";
-
-interface Station {
-  name: string;
-  code: number;
-  lat: number;
-  lng: number;
-  line: string;
-}
+import { Station } from "types/stations";
 
 const GachaHandler = async (
   req: NextApiRequest,

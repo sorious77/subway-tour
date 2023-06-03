@@ -2,17 +2,12 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { Station } from "types/stations";
+import { useGetStations } from "queries/stations";
 
 interface User {
   email: string;
   nickname: string;
-}
-interface Station {
-  name: string;
-  code: number;
-  lat: number;
-  lng: number;
-  line: string;
 }
 
 interface InputValue {
@@ -37,20 +32,13 @@ const Write = () => {
     setValue,
   } = useForm<InputValue>();
 
-  const [stations, setStations] = useState<Station[]>([]);
   const [filteredStations, setFilteredStations] = useState<Station[]>([]);
   const [thumbnailUrl, setThumbnailUrl] = useState("");
 
   const watchStation = watch("station_nm");
   const watchThumbnail = watch("thumbnail");
 
-  useEffect(() => {
-    (async () => {
-      const result = await (await fetch("/api/stations")).json();
-
-      setStations(result);
-    })();
-  }, []);
+  const { isLoading, isError, data: stations } = useGetStations();
 
   useEffect(() => {
     (() => {
@@ -59,7 +47,7 @@ const Write = () => {
         return;
       }
 
-      const filtered = stations.filter((station) => {
+      const filtered = stations!.filter((station) => {
         return station.name.includes(watchStation);
       });
 
@@ -72,13 +60,13 @@ const Write = () => {
     })();
   }, [watchStation]);
 
-  useEffect(() => {
-    if (watchThumbnail && watchThumbnail.length > 0) {
-      const file = watchThumbnail[0];
+  // useEffect(() => {
+  //   if (watchThumbnail && watchThumbnail.length > 0) {
+  //     const file = watchThumbnail[0];
 
-      setThumbnailUrl(URL.createObjectURL(file));
-    }
-  }, [watchThumbnail]);
+  //     setThumbnailUrl(URL.createObjectURL(file));
+  //   }
+  // }, [watchThumbnail]);
 
   const writePost = async (data: InputValue) => {
     try {
@@ -149,7 +137,7 @@ const Write = () => {
                     required: "지하철 역 이름을 입력하세요.",
                     validate: {
                       isExist: (name) =>
-                        stations.filter((station) => {
+                        stations!.filter((station) => {
                           return station.name === name;
                         }).length > 0 || "존재하지 않는 역입니다",
                     },
