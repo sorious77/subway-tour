@@ -11,4 +11,13 @@ interface Post {
   user: User;
 }
 
-export type { Post };
+interface MutatePost {
+  id?: string;
+  title: string;
+  station_nm: string;
+  visitedAt: string;
+  content: string;
+  author: string;
+}
+
+export type { Post, MutatePost };
