@@ -1,17 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Handler from "../../../libs/Handler";
 import axios from "axios";
-
-type PostData = {
-  title: string;
-  station_nm: string;
-  visitedAt: string;
-  content: string;
-  author: string;
-};
+import { MutatePost } from "types/posts";
 
 const WriteHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const newPost: PostData = JSON.parse(req.body);
+  const newPost: MutatePost = req.body;
 
   const { data } = await axios({
     url: `${process.env.BASE_URL}/posts/write`,

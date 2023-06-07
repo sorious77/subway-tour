@@ -1,21 +1,14 @@
 import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 import Handler from "../../../libs/Handler";
-
-interface Post {
-  title: string;
-  station_nm: string;
-  visitedAt: string;
-  content: string;
-  id: string;
-}
+import { MutatePost } from "types/posts";
 
 const UpdateHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const {
     query: { id },
   } = req;
 
-  const post: Post = JSON.parse(req.body);
+  const post: MutatePost = req.body;
 
   const { data } = await axios({
     url: `${process.env.BASE_URL}/posts/${id}`,

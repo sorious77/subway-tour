@@ -1,43 +1,29 @@
 import Post from "components/Post";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-
-interface User {
-  nickname: string;
-}
-interface Post {
-  title: string;
-  _id: string;
-  content: string;
-  thumbnail?: string;
-  station_nm: string;
-  user: User;
-  visitedAt: string;
-  createdAt: string;
-  id: string;
-}
+import { usePostList, fetchPostList, usePrefetchPostList } from "queries/posts";
+import { useQueryClient } from "react-query";
 
 const List = () => {
   const router = useRouter();
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
 
-  const [lastPostId, setLastPostId] = useState(Number.MAX_VALUE);
+  const queryClient = useQueryClient();
+
+  const { data, isLoading } = usePostList(page);
 
   useEffect(() => {
-    (async () => {
-      const result = await (await fetch(`/api/list/${lastPostId}`)).json();
+    if (data?.hasMore) {
+      usePrefetchPostList(page);
+    }
+  }, [data, page, queryClient]);
 
-      setLoading(false);
-      setPosts([...posts, ...result.posts]);
-    })();
-  }, [lastPostId]);
+  const handlePrevPage = () => {
+    setPage((page) => Math.max(page - 1, 0));
+  };
 
-  const getNextPage = async () => {
-    // 현재 페이지 +1
-    let size = posts.length;
-
-    setLastPostId(+posts[size - 1].id);
+  const handleNextPage = () => {
+    setPage((page) => (data?.hasMore ? page + 1 : page));
   };
 
   return (
@@ -63,15 +49,15 @@ const List = () => {
           />
         </svg>
       </button>
-      {loading ? (
+      {isLoading ? (
         <span>Loading...</span>
-      ) : posts.length === 0 ? (
+      ) : data?.posts.length === 0 ? (
         <div>게시글 목록이 존재하지 않습니다.</div>
       ) : (
         <div className="flex flex-col items-center w-full">
           <div className="flex justify-center w-full">
             <div className="flex flex-col justify-center w-1/2">
-              {posts.map((post) => (
+              {data?.posts.map((post) => (
                 <Post
                   key={post.id}
                   title={post.title}
@@ -83,12 +69,50 @@ const List = () => {
               ))}
             </div>
           </div>
-          <button
-            onClick={getNextPage}
-            className="px-4 py-2 mb-10 text-white rounded bg-rose-400 dark:bg-white dark:text-black hover:bg-rose-500 hover:transition-colors hover:duration-500 dark:hover:bg-rose-200"
-          >
-            더 보기...
-          </button>
+          <div className="flex">
+            <button
+              className="border border-rose-400 text-rose-400 rounded font-bold py-4 px-6 mr-2 flex items-center hover:bg-rose-400 hover:text-white dark:border-white dark:text-black dark:bg-white dark:hover:bg-zinc-500 dark:hover:text-white disabled:bg-inherit disabled:text-rose-400 dark:disabled:bg-inherit dark:disabled:text-white"
+              onClick={handlePrevPage}
+              disabled={page === 1}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6 mr-1"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"
+                />
+              </svg>
+              Previous page
+            </button>
+            <button
+              className="border border-rose-400 text-rose-400 rounded font-bold py-4 px-6 mr-2 flex items-center hover:bg-rose-400 hover:text-white dark:border-white dark:text-black dark:bg-white dark:hover:bg-zinc-500 dark:hover:text-white disabled:bg-inherit disabled:text-rose-400 dark:disabled:bg-inherit dark:disabled:text-white"
+              disabled={!data?.hasMore}
+              onClick={handleNextPage}
+            >
+              Next page
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6 ml-1"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       )}
     </div>

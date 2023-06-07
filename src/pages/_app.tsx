@@ -7,7 +7,9 @@ import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 const AuthCheck = ({ children }: any) => {
   const { data: session, status } = useSession();
@@ -23,18 +25,23 @@ const AuthCheck = ({ children }: any) => {
 };
 
 const App = ({ Component, pageProps }: AppProps) => {
+  const [queryClient] = useState(() => new QueryClient());
+
   return (
     <RecoilRoot>
       <ThemeProvider attribute="class">
         <SessionProvider session={pageProps.session}>
-          <Layout>
-            <Head>
-              <title>Subway Tour</title>
-            </Head>
-            <AuthCheck>
-              <Component {...pageProps} />
-            </AuthCheck>
-          </Layout>
+          <QueryClientProvider client={queryClient}>
+            <Layout>
+              <Head>
+                <title>Subway Tour</title>
+              </Head>
+              <AuthCheck>
+                <Component {...pageProps} />
+              </AuthCheck>
+            </Layout>
+            <ReactQueryDevtools initialIsOpen={false} />
+          </QueryClientProvider>
         </SessionProvider>
       </ThemeProvider>
     </RecoilRoot>
