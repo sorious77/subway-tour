@@ -20,4 +20,10 @@ interface MutatePost {
   author: string;
 }
 
-export type { Post, MutatePost };
+interface List {
+  posts: Post[];
+  totalPage: number;
+  hasMore?: boolean;
+}
+
+export type { Post, MutatePost, List };

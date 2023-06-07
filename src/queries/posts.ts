@@ -1,11 +1,14 @@
 import {
+  QueryClient,
   useMutation,
   useQuery,
   useQueryClient,
   UseQueryOptions,
 } from "react-query";
-import { Post, MutatePost } from "types/posts";
+import { Post, MutatePost, List } from "types/posts";
 import axios from "axios";
+
+const queryClient = new QueryClient();
 
 const fetchPost = async (id: string): Promise<Post> => {
   const postId = Number(id);
@@ -27,6 +30,12 @@ const updatePost = async (post: MutatePost): Promise<Post> => {
   return data;
 };
 
+export const fetchPostList = async (page: number): Promise<List> => {
+  const { data } = await axios.get(`/api/list/${page}`);
+
+  return data;
+};
+
 export const useGetPost = (id: string, options?: UseQueryOptions<Post>) => {
   return useQuery(["post", id], async () => fetchPost(id), {
     onError: () => {
@@ -38,11 +47,9 @@ export const useGetPost = (id: string, options?: UseQueryOptions<Post>) => {
 };
 
 export const useWritePostMutation = () => {
-  const queryClient = useQueryClient();
-
   return useMutation(writePost, {
     onSuccess: () => {
-      // queryClient.invalidateQueries("posts")
+      queryClient.invalidateQueries("postList");
     },
     onError: () => {
       throw new Error("write post error");
@@ -53,10 +60,26 @@ export const useWritePostMutation = () => {
 export const useUpdatePostMutation = () => {
   return useMutation(updatePost, {
     onSuccess: () => {
-      // queryClient.invalidateQueries("posts")
+      queryClient.invalidateQueries("postList");
     },
     onError: () => {
       throw new Error("write post error");
     },
   });
+};
+
+export const usePostList = (page: number) => {
+  return useQuery(["postList", page], () => fetchPostList(page), {
+    staleTime: 5000,
+    keepPreviousData: true,
+    select: (data) => {
+      return { ...data, hasMore: data.totalPage > page };
+    },
+  });
+};
+
+export const usePrefetchPostList = (page: number) => {
+  return queryClient.prefetchQuery(["postList", page + 1], () =>
+    fetchPostList(page + 1)
+  );
 };
