@@ -2,9 +2,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useGetPost } from "queries/posts";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import { Post as IPost } from "types/posts";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
 const Post = () => {
   const router = useRouter();
@@ -13,7 +10,6 @@ const Post = () => {
   const { id } = router.query;
 
   const { data: post, isError } = useGetPost(id as string);
-  console.log(`isError : ${isError}`);
 
   const getDate = (timestamp: string) => {
     const date = new Date(timestamp);
