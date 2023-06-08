@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useGetPost } from "queries/posts";
+import { useDeletePostMutation, useGetPost } from "queries/posts";
 import { useSession } from "next-auth/react";
+import { useCallback } from "react";
 
 const Post = () => {
   const router = useRouter();
@@ -21,13 +22,20 @@ const Post = () => {
 
   const handleDelete = async () => {
     if (confirm("정말로 삭제하시겠습니까?")) {
-      await fetch(`/api/post/delete?id=${post?.id}`, {
-        method: "DELETE",
-      });
-
-      router.push("/list");
+      handleDeletePost(post!.id);
     }
   };
+
+  const { mutate: deletePostMutate } = useDeletePostMutation();
+
+  const handleDeletePost = useCallback(
+    (id: string) => {
+      deletePostMutate(id, {
+        onSuccess: (result) => router.push("/list"),
+      });
+    },
+    [deletePostMutate]
+  );
 
   const handleUpdate = () => {
     router.push(`/post/update/${post?.id}`);
