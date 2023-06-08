@@ -10,7 +10,18 @@ const Post = () => {
 
   const { id } = router.query;
 
-  const { data: post, isError } = useGetPost(id as string);
+  const {
+    data: post,
+    isLoading,
+    isError,
+  } = useGetPost(id as string, {
+    onSuccess: (data) => {
+      if (!data) {
+        alert("존재하지 않는 게시글입니다.");
+        router.push("/list");
+      }
+    },
+  });
 
   const getDate = (timestamp: string) => {
     const date = new Date(timestamp);
@@ -32,6 +43,7 @@ const Post = () => {
     (id: string) => {
       deletePostMutate(id, {
         onSuccess: (result) => router.push("/list"),
+        onError: (error) => console.log("hi"),
       });
     },
     [deletePostMutate]
@@ -79,7 +91,12 @@ const Post = () => {
             </div>
           )}
         </div>
-        {isError && <div>에러가 발생했습니다. 다시 시도해주세요</div>}
+        {isLoading && (
+          <div className="text-lg">로딩중입니다. 잠시만 기다려주세요</div>
+        )}
+        {isError && (
+          <div className="text-lg">에러가 발생했습니다. 다시 시도해주세요</div>
+        )}
 
         {post && (
           <div>

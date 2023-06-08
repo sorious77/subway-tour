@@ -2,7 +2,6 @@ import {
   QueryClient,
   useMutation,
   useQuery,
-  useQueryClient,
   UseQueryOptions,
 } from "react-query";
 import { Post, MutatePost, List } from "types/posts";
@@ -44,9 +43,9 @@ const deletePost = async (id: string): Promise<Boolean> => {
 
 export const useGetPost = (id: string, options?: UseQueryOptions<Post>) => {
   return useQuery(["post", id], async () => fetchPost(id), {
-    onError: () => {
-      throw new Error("error!!");
-    },
+    // onError: () => {
+    //   throw new Error("error!!");
+    // },
     enabled: Boolean(id),
     onSuccess: options && options.onSuccess,
   });
