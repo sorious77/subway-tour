@@ -6,4 +6,9 @@ const themeState = atom({
   default: "light",
 });
 
-export { themeState };
+const pageState = atom({
+  key: `pageState/${v1()}`,
+  default: 1,
+});
+
+export { themeState, pageState };

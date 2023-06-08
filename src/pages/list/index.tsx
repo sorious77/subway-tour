@@ -3,10 +3,12 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { usePostList, fetchPostList, usePrefetchPostList } from "queries/posts";
 import { useQueryClient } from "react-query";
+import { useRecoilState } from "recoil";
+import { pageState } from "components/states";
 
 const List = () => {
   const router = useRouter();
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useRecoilState(pageState);
 
   const queryClient = useQueryClient();
 
