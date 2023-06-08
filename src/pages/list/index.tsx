@@ -1,7 +1,7 @@
 import Post from "components/Post";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { usePostList, fetchPostList, usePrefetchPostList } from "queries/posts";
+import { useEffect } from "react";
+import { usePostList, usePrefetchPostList } from "queries/posts";
 import { useQueryClient } from "react-query";
 import { useRecoilState } from "recoil";
 import { pageState } from "components/states";
