@@ -14,15 +14,15 @@ const List = () => {
 
   const { data, isLoading } = usePostList(page);
 
-  const prefetchNextPage = () => {
-    if (data?.hasMore) {
-      usePrefetchPostList(page);
-    }
-  };
+  // const prefetchNextPage = () => {
+  //   if (data?.hasMore) {
+  //     usePrefetchPostList(page);
+  //   }
+  // };
 
-  useEffect(() => {
-    prefetchNextPage();
-  }, [data, page, queryClient]);
+  // useEffect(() => {
+  //   prefetchNextPage();
+  // }, [data, page, queryClient]);
 
   const handlePrevPage = () => {
     setPage((page) => Math.max(page - 1, 0));
