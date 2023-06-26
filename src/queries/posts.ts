@@ -2,7 +2,6 @@ import {
   QueryClient,
   useMutation,
   useQuery,
-  useQueryClient,
   UseQueryOptions,
 } from "react-query";
 import { Post, MutatePost, List } from "types/posts";
@@ -36,11 +35,17 @@ export const fetchPostList = async (page: number): Promise<List> => {
   return data;
 };
 
+const deletePost = async (id: string): Promise<Boolean> => {
+  const { data } = await axios.delete(`/api/post/delete?id=${id}`);
+
+  return data;
+};
+
 export const useGetPost = (id: string, options?: UseQueryOptions<Post>) => {
   return useQuery(["post", id], async () => fetchPost(id), {
-    onError: () => {
-      throw new Error("error!!");
-    },
+    // onError: () => {
+    //   throw new Error("error!!");
+    // },
     enabled: Boolean(id),
     onSuccess: options && options.onSuccess,
   });
@@ -82,4 +87,15 @@ export const usePrefetchPostList = (page: number) => {
   return queryClient.prefetchQuery(["postList", page + 1], () =>
     fetchPostList(page + 1)
   );
+};
+
+export const useDeletePostMutation = () => {
+  return useMutation(deletePost, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("postList");
+    },
+    onError: () => {
+      throw new Error("delete post error");
+    },
+  });
 };

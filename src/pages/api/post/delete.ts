@@ -13,7 +13,11 @@ const DeleteHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     method: "delete",
   });
 
-  return res.status(200).json(data);
+  if (data.deletedCount == 1) {
+    return res.status(200).json({ success: true });
+  }
+
+  return res.status(200).json({ success: false });
 };
 
 export default Handler("DELETE", DeleteHandler);

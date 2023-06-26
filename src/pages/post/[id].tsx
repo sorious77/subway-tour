@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useGetPost } from "queries/posts";
+import { useDeletePostMutation, useGetPost } from "queries/posts";
 import { useSession } from "next-auth/react";
+import { useCallback } from "react";
 
 const Post = () => {
   const router = useRouter();
@@ -9,7 +10,18 @@ const Post = () => {
 
   const { id } = router.query;
 
-  const { data: post, isError } = useGetPost(id as string);
+  const {
+    data: post,
+    isLoading,
+    isError,
+  } = useGetPost(id as string, {
+    onSuccess: (data) => {
+      if (!data) {
+        alert("존재하지 않는 게시글입니다.");
+        router.push("/list");
+      }
+    },
+  });
 
   const getDate = (timestamp: string) => {
     const date = new Date(timestamp);
@@ -21,13 +33,21 @@ const Post = () => {
 
   const handleDelete = async () => {
     if (confirm("정말로 삭제하시겠습니까?")) {
-      await fetch(`/api/post/delete?id=${post?.id}`, {
-        method: "DELETE",
-      });
-
-      router.push("/list");
+      handleDeletePost(post!.id);
     }
   };
+
+  const { mutate: deletePostMutate } = useDeletePostMutation();
+
+  const handleDeletePost = useCallback(
+    (id: string) => {
+      deletePostMutate(id, {
+        onSuccess: (result) => router.push("/list"),
+        onError: (error) => console.log("hi"),
+      });
+    },
+    [deletePostMutate]
+  );
 
   const handleUpdate = () => {
     router.push(`/post/update/${post?.id}`);
@@ -71,7 +91,12 @@ const Post = () => {
             </div>
           )}
         </div>
-        {isError && <div>에러가 발생했습니다. 다시 시도해주세요</div>}
+        {isLoading && (
+          <div className="text-lg">로딩중입니다. 잠시만 기다려주세요</div>
+        )}
+        {isError && (
+          <div className="text-lg">에러가 발생했습니다. 다시 시도해주세요</div>
+        )}
 
         {post && (
           <div>
