@@ -65,7 +65,7 @@ const Post = () => {
             stroke="currentColor"
             className="w-6 h-6 cursor-pointer"
             onClick={() => {
-              router.push("/list");
+              router.back();
             }}
           >
             <path

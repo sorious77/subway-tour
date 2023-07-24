@@ -29,7 +29,7 @@ const updatePost = async (post: MutatePost): Promise<Post> => {
   return data;
 };
 
-export const fetchPostList = async (page: number): Promise<List> => {
+const fetchPostList = async (page: number): Promise<List> => {
   const { data } = await axios.get(`/api/list/${page}`);
 
   return data;
@@ -37,6 +37,17 @@ export const fetchPostList = async (page: number): Promise<List> => {
 
 const deletePost = async (id: string): Promise<Boolean> => {
   const { data } = await axios.delete(`/api/post/delete?id=${id}`);
+
+  return data;
+};
+
+const fetchPostListByEmail = async (
+  page: number,
+  email: string
+): Promise<List> => {
+  const { data } = await axios.get(
+    `/api/list/mydiary?page=${page}&email=${email}`
+  );
 
   return data;
 };
@@ -81,6 +92,20 @@ export const usePostList = (page: number) => {
       return { ...data, hasMore: data.totalPage > page };
     },
   });
+};
+
+export const usePostListByEmail = (page: number, email: string) => {
+  return useQuery(
+    ["postListByEmail", page, email],
+    () => fetchPostListByEmail(page, email),
+    {
+      staleTime: 5000,
+      keepPreviousData: true,
+      select: (data) => {
+        return { ...data, hasMore: data.totalPage > page };
+      },
+    }
+  );
 };
 
 export const usePrefetchPostList = (page: number) => {

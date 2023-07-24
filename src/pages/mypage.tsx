@@ -44,7 +44,10 @@ const MyPage = () => {
             </svg>
             정보 수정
           </div>
-          <div className="flex items-center">
+          <div
+            className="flex items-center cursor-pointer"
+            onClick={() => router.push("/mydiary")}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
