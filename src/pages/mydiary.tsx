@@ -1,12 +1,15 @@
-import { usePostList } from "queries/posts";
-import { useRecoilState } from "recoil";
-import { pageState } from "components/states";
+import { useRouter } from "next/router";
+import { usePostListByEmail } from "queries/posts";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { pageState, userState } from "components/states";
 import List from "components/List";
 
-const DiaryList = () => {
+const MyDiary = () => {
+  const router = useRouter();
   const [page, setPage] = useRecoilState(pageState);
+  const user = useRecoilValue(userState);
 
-  const { data, isLoading } = usePostList(page);
+  const { data, isLoading } = usePostListByEmail(page, user);
 
   const handlePrevPage = () => {
     setPage((page) => Math.max(page - 1, 0));
@@ -27,4 +30,4 @@ const DiaryList = () => {
   );
 };
 
-export default DiaryList;
+export default MyDiary;

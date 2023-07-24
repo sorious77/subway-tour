@@ -11,4 +11,9 @@ const pageState = atom({
   default: 1,
 });
 
-export { themeState, pageState };
+const userState = atom({
+  key: `userState/${v1()}`,
+  default: "",
+});
+
+export { themeState, pageState, userState };
