@@ -75,6 +75,8 @@
 
 // export default MyDiary;
 
-export default () => {
+const Mydiary = () => {
   return <div>Hi</div>;
 };
+
+export default Mydiary;
