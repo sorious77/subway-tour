@@ -18,7 +18,7 @@ const StationInfo = ({ station }: StationProps) => {
       <Map
         center={{ lat: lat, lng: lng }}
         level={7}
-        className="w-5/6 mt-8 border border-gray-100 rounded h-2/3"
+        className="mt-8 w-full border border-gray-100 rounded h-72"
       >
         <ZoomControl position={2} />
         <MapMarker

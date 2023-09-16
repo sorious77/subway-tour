@@ -2,11 +2,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import Handler from "../../../libs/Handler";
 import axios from "axios";
 
-type UserData = {
-  email?: string;
-  password?: string;
-};
-
 type Error = {
   error: boolean;
   message: string;

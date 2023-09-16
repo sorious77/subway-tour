@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useTheme } from "next-themes";
 import { signOut, useSession } from "next-auth/react";
 
@@ -6,8 +7,10 @@ const NavBar = () => {
   const { theme, setTheme } = useTheme();
   const { status } = useSession();
 
+  const router = useRouter();
+
   return (
-    <div className="flex items-center justify-between px-6 py-5 mb-10 bg-rose-200 dark:bg-zinc-800">
+    <div className="flex items-center justify-between px-6 py-5 bg-rose-200 dark:bg-zinc-800">
       <div className="text-2xl">
         <Link href="/" className="hover:text-gray-700 dark:hover:text-gray-200">
           🚇 Subway Tour
@@ -15,7 +18,7 @@ const NavBar = () => {
       </div>
       <div
         className={`flex justify-between ${
-          status === "authenticated" ? "w-1/3" : "w-1/6"
+          status === "authenticated" ? "w-1/2" : "w-1/6"
         }`}
       >
         <button
@@ -51,6 +54,7 @@ const NavBar = () => {
             <span
               onClick={() => {
                 signOut();
+                router.push("/");
               }}
             >
               로그아웃

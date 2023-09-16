@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Container from "components/Container";
 
 type InputValue = {
   email: string;
@@ -46,9 +47,9 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-full">
+    <Container>
       <form
-        className="flex flex-col w-1/3"
+        className="flex flex-col w-full"
         onSubmit={handleSubmit(async (data) => {
           await signup(data);
         })}
@@ -220,7 +221,7 @@ const Signup = () => {
           </small>
         )}
       </form>
-    </div>
+    </Container>
   );
 };
 
