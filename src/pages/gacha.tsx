@@ -3,6 +3,7 @@ import Head from "next/head";
 import StationInfo from "components/StationInfo";
 import { Station } from "types/stations";
 import { useGetStations } from "queries/stations";
+import Container from "components/Container";
 
 const Gacha = () => {
   const [station, setStation] = useState<Station>();
@@ -20,7 +21,7 @@ const Gacha = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full">
+    <Container>
       <Head>
         <title>Subway Tour | 뽑기</title>
       </Head>
@@ -29,7 +30,7 @@ const Gacha = () => {
       ) : (
         <button
           onClick={handleGacha}
-          className="px-4 py-2 text-white rounded bg-rose-400 dark:bg-white dark:text-black hover:bg-rose-500 hover:transition-colors hover:duration-500 dark:hover:bg-rose-200"
+          className="w-40 h-12 px-4 py-2 mb-10 text-white rounded bg-rose-400 dark:bg-white dark:text-black hover:bg-rose-500 hover:transition-colors hover:duration-500 dark:hover:bg-rose-200"
         >
           뽑아보자구!
         </button>
@@ -37,7 +38,7 @@ const Gacha = () => {
 
       {station && <StationInfo station={station} />}
       {isError && <div>데이터를 불러오는 중 에러가 발생했습니다</div>}
-    </div>
+    </Container>
   );
 };
 

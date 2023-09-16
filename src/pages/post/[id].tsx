@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useDeletePostMutation, useGetPost } from "queries/posts";
 import { useSession } from "next-auth/react";
 import { useCallback } from "react";
+import Container from "components/Container";
 
 const Post = () => {
   const router = useRouter();
@@ -54,30 +55,32 @@ const Post = () => {
   };
 
   return (
-    <div className="relative flex flex-col items-center px-10 py-10 mt-10 whitespace-pre-line dark:bg-zinc-700">
-      <div className="w-1/2">
-        <div className="flex items-center justify-between mb-6">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6 cursor-pointer"
-            onClick={() => {
-              router.back();
-            }}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-            />
-          </svg>
+    <Container>
+      <div className="w-full flex flex-col items-center py-10 mt-10 whitespace-pre-line dark:bg-zinc-700">
+        <div className="flex items-center justify-between mb-6 w-full">
+          <div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6 cursor-pointer"
+              onClick={() => {
+                router.back();
+              }}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+              />
+            </svg>
+          </div>
           {session?.user?.user?.nickname === post?.user.nickname && (
-            <div className="flex justify-between w-40">
+            <div className="flex">
               <button
-                className="w-16 p-2 text-white rounded bg-rose-400 dark:bg-white dark:text-black hover:bg-rose-500 hover:duration-500 dark:hover:bg-rose-200"
+                className="w-16 p-2 text-white rounded bg-rose-400 dark:bg-white dark:text-black hover:bg-rose-500 hover:duration-500 dark:hover:bg-rose-200 mr-2"
                 onClick={handleDelete}
               >
                 삭제
@@ -99,7 +102,7 @@ const Post = () => {
         )}
 
         {post && (
-          <div>
+          <div className="w-full">
             <h1 className="mb-6 text-3xl">{post?.title}</h1>
             <div className="mb-4">
               <Link
@@ -121,7 +124,7 @@ const Post = () => {
           </div>
         )}
       </div>
-    </div>
+    </Container>
   );
 };
 

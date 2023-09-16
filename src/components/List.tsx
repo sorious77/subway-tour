@@ -1,5 +1,6 @@
 import { Post as IPost } from "types/posts";
 import Post from "./Post";
+import Container from "./Container";
 
 interface PostData {
   hasMore: boolean;
@@ -23,7 +24,7 @@ const List = ({
   handleNextPage,
 }: ListProps) => {
   return (
-    <div className="flex flex-col items-center justify-center px-4 overflow-y-auto dark:bg-zinc-700">
+    <Container>
       {isLoading ? (
         <span>Loading...</span>
       ) : data?.posts.length === 0 ? (
@@ -31,7 +32,7 @@ const List = ({
       ) : (
         <div className="flex flex-col items-center w-full">
           <div className="flex justify-center w-full">
-            <div className="flex flex-col justify-center w-1/2">
+            <div className="flex flex-col justify-center w-full">
               {data?.posts.map((post) => (
                 <Post
                   key={post.id}
@@ -44,7 +45,7 @@ const List = ({
               ))}
             </div>
           </div>
-          <div className="flex">
+          <div className="flex mb-10">
             <button
               className="border border-rose-400 text-rose-400 rounded font-bold py-4 px-6 mr-2 flex items-center hover:bg-rose-400 hover:text-white dark:border-white dark:text-black dark:bg-white dark:hover:bg-zinc-500 dark:hover:text-white disabled:bg-inherit disabled:text-rose-400 dark:disabled:bg-inherit dark:disabled:text-white"
               onClick={handlePrevPage}
@@ -90,7 +91,7 @@ const List = ({
           </div>
         </div>
       )}
-    </div>
+    </Container>
   );
 };
 

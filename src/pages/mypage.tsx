@@ -1,3 +1,4 @@
+import Container from "components/Container";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
@@ -6,7 +7,7 @@ const MyPage = () => {
   const { data: session } = useSession();
 
   return (
-    <div className="flex flex-col items-center h-full">
+    <Container>
       <div className="flex flex-col items-center">
         <div className="flex items-center mb-10 text-2xl">
           <div className="mr-2">
@@ -66,7 +67,7 @@ const MyPage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
 

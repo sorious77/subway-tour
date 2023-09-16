@@ -21,7 +21,7 @@ const Signup = () => {
   return (
     <div className="flex flex-col items-center justify-center h-full">
       <form
-        className="flex flex-col w-1/3"
+        className="flex flex-col w-full"
         onSubmit={handleSubmit(async (data) => {
           if (!data.nickname && !data.newPassword) {
             setError("닉네임이나 새 비밀번호 둘 중 하나는 필수 입력입니다.");

@@ -48,7 +48,7 @@ const PostInputForm = ({ handlePostSubmit, usePostForm }: InputFormProps) => {
 
   return (
     <div className="flex flex-col items-center h-full dark:bg-inherit">
-      <div className="w-2/3 pb-4 -mt-6">
+      <div className="pb-4 -mt-6">
         <form
           className="flex flex-col items-center w-full h-full"
           onSubmit={handleSubmit(async (data) => handlePostSubmit(data))}
@@ -83,7 +83,7 @@ const PostInputForm = ({ handlePostSubmit, usePostForm }: InputFormProps) => {
           )}
           <div className="flex items-center justify-between w-full mx-2 my-4">
             <div
-              className={`flex w-5/6 flex-col mr-2 border-2 border-gray-100 rounded ${
+              className={`flex w-1/2 flex-col mr-2 border-2 border-gray-100 rounded ${
                 filteredStations.length > 0 && "relative"
               }`}
             >

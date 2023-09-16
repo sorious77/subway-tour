@@ -5,6 +5,7 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRecoilState } from "recoil";
 import { userState } from "components/states";
+import Container from "components/Container";
 
 type InputValue = {
   email: string;
@@ -49,9 +50,9 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-full">
+    <Container>
       <form
-        className="flex flex-col w-1/3"
+        className="flex flex-col w-full"
         onSubmit={handleSubmit(async (data) => {
           handleLogin(data);
         })}
@@ -142,14 +143,14 @@ const Login = () => {
           </small>
         )}
       </form>
-      <div className="grid items-center w-1/3 grid-cols-3 mt-10">
+      <div className="grid items-center w-full grid-cols-3 mt-10">
         <div className="border-t border-t-gray-200" />
         <Link href="/signup" className="text-center cursor-pointer">
           회원가입하기
         </Link>
         <div className="border-t border-t-gray-200" />
       </div>
-    </div>
+    </Container>
   );
 };
 
